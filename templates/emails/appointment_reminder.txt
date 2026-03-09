@@ -1,0 +1,44 @@
+{{ brand_name }}
+================================
+
+APPOINTMENT REMINDER
+
+Hello {{ customer.first_name|default:"there" }},
+
+This is a friendly reminder about your upcoming appointment tomorrow!
+
+APPOINTMENT DETAILS
+-------------------
+Service: {{ service.name }}
+Date: {{ appointment.date|date:"l, F j, Y" }}
+Time: {{ appointment.start_time|time:"g:i A" }}
+Stylist: {{ staff.user.full_name }}
+Location:
+{% if brand == 'men' %}
+Al Falah Complex, Gulmarg Road, Magam
+Himalayas Region, Jammu & Kashmir
+{% else %}
+Zirakpur: Pannu Complex, SCF-12, Behind Lucky Dhaba, New Defence Colony, Utrathiya, Punjab 140603
+MagamTown: Al Falah Complex, 2nd Floor, Gulmarg Road, Magam 193401
+Dehradun: C5 Near Fountain Chok, C Block Nehru Colony, Dharampur 248001
+Kharar (Chandigarh)
+{% endif %}
+
+BEFORE YOUR VISIT
+-----------------
+- Please arrive 10 minutes early
+- Bring any reference photos if needed
+- Let us know if you need to reschedule
+
+We look forward to seeing you tomorrow!
+
+-------------------
+{{ brand_name }}
+{% if brand == 'men' %}
+Al Falah Complex, Gulmarg Road, Magam
+Himalayas Region, Jammu & Kashmir
++1951295122 / +918899918595
+{% else %}
+Pannu Complex, SCF-12, Utrathiya, Zirakpur, Punjab 140603
+Contact the front desk for location-specific numbers
+{% endif %}

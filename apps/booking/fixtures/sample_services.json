@@ -1,0 +1,238 @@
+[
+    {
+        "model": "booking.servicecategory",
+        "pk": 1,
+        "fields": {
+            "name": "Haircuts",
+            "slug": "haircuts",
+            "brand": "men",
+            "description": "Classic and modern haircut styles",
+            "order": 1
+        }
+    },
+    {
+        "model": "booking.servicecategory",
+        "pk": 2,
+        "fields": {
+            "name": "Beard & Shave",
+            "slug": "beard-shave",
+            "brand": "men",
+            "description": "Beard grooming and traditional shaves",
+            "order": 2
+        }
+    },
+    {
+        "model": "booking.servicecategory",
+        "pk": 3,
+        "fields": {
+            "name": "Hair Styling",
+            "slug": "hair-styling",
+            "brand": "women",
+            "description": "Professional hair styling services",
+            "order": 1
+        }
+    },
+    {
+        "model": "booking.servicecategory",
+        "pk": 4,
+        "fields": {
+            "name": "Hair Color",
+            "slug": "hair-color",
+            "brand": "women",
+            "description": "Coloring, highlights, and treatments",
+            "order": 2
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 1,
+        "fields": {
+            "name": "Classic Haircut",
+            "category": 1,
+            "brand": "men",
+            "description": "Traditional gentleman's haircut with precision scissors and clippers. Includes consultation, shampoo, and styling.",
+            "duration_minutes": 30,
+            "price": "45.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": true,
+            "order": 1
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 2,
+        "fields": {
+            "name": "Executive Cut & Style",
+            "category": 1,
+            "brand": "men",
+            "description": "Premium haircut experience with hot towel treatment, scalp massage, and precision styling for the modern professional.",
+            "duration_minutes": 45,
+            "price": "65.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": true,
+            "order": 2
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 3,
+        "fields": {
+            "name": "Fade & Design",
+            "category": 1,
+            "brand": "men",
+            "description": "Sharp fade with optional hair design. Perfect for a bold, modern look.",
+            "duration_minutes": 40,
+            "price": "55.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": false,
+            "order": 3
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 4,
+        "fields": {
+            "name": "Beard Trim",
+            "category": 2,
+            "brand": "men",
+            "description": "Professional beard shaping and trimming with hot towel finish.",
+            "duration_minutes": 20,
+            "price": "25.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": false,
+            "order": 1
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 5,
+        "fields": {
+            "name": "Traditional Hot Shave",
+            "category": 2,
+            "brand": "men",
+            "description": "Luxurious straight razor shave with hot towels, pre-shave oil, and soothing aftershave balm.",
+            "duration_minutes": 35,
+            "price": "40.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": true,
+            "order": 2
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 6,
+        "fields": {
+            "name": "Haircut & Beard Combo",
+            "category": 1,
+            "brand": "men",
+            "description": "Complete grooming package: precision haircut plus full beard trim and shape.",
+            "duration_minutes": 50,
+            "price": "75.00",
+            "sale_price": "65.00",
+            "is_active": true,
+            "is_featured": true,
+            "order": 4
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 7,
+        "fields": {
+            "name": "Women's Haircut",
+            "category": 3,
+            "brand": "women",
+            "description": "Personalized haircut tailored to your face shape and lifestyle. Includes consultation, shampoo, and blowdry.",
+            "duration_minutes": 45,
+            "price": "75.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": true,
+            "order": 1
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 8,
+        "fields": {
+            "name": "Blowout & Style",
+            "category": 3,
+            "brand": "women",
+            "description": "Professional blowdry and styling for any occasion. Long-lasting volume and shine.",
+            "duration_minutes": 40,
+            "price": "55.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": true,
+            "order": 2
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 9,
+        "fields": {
+            "name": "Updo & Special Occasion",
+            "category": 3,
+            "brand": "women",
+            "description": "Elegant updo styling perfect for weddings, proms, and special events.",
+            "duration_minutes": 60,
+            "price": "95.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": false,
+            "order": 3
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 10,
+        "fields": {
+            "name": "Full Color",
+            "category": 4,
+            "brand": "women",
+            "description": "Complete single-process color application for vibrant, all-over color.",
+            "duration_minutes": 90,
+            "price": "120.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": true,
+            "order": 1
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 11,
+        "fields": {
+            "name": "Highlights",
+            "category": 4,
+            "brand": "women",
+            "description": "Partial or full highlights using foil technique for natural, sun-kissed dimension.",
+            "duration_minutes": 120,
+            "price": "150.00",
+            "sale_price": null,
+            "is_active": true,
+            "is_featured": true,
+            "order": 2
+        }
+    },
+    {
+        "model": "booking.service",
+        "pk": 12,
+        "fields": {
+            "name": "Balayage",
+            "category": 4,
+            "brand": "women",
+            "description": "Hand-painted highlighting technique for a natural, graduated color effect.",
+            "duration_minutes": 150,
+            "price": "200.00",
+            "sale_price": "180.00",
+            "is_active": true,
+            "is_featured": true,
+            "order": 3
+        }
+    }
+]

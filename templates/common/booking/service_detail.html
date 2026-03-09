@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ service.name }}{% endblock %}
+
+{% block content %}
+<section class="page-header" style="padding: var(--spacing-3xl) 0; background: var(--color-bg-secondary);">
+    <div class="container" style="max-width: 1000px;">
+        <a href="{% url 'booking:services' %}" style="display: inline-flex; align-items: center; gap: var(--spacing-sm); font-size: var(--font-size-sm); color: var(--color-text-muted); margin-bottom: var(--spacing-lg);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Services
+        </a>
+
+        <div class="grid grid-cols-2 gap-3" style="align-items: start;">
+            <!-- Image -->
+            <div style="position: relative; border-radius: var(--radius-xl); overflow: hidden;">
+                {% if service.image %}
+                <img src="{{ service.image.url }}" alt="{{ service.name }}"
+                     style="width: 100%; aspect-ratio: 4/3; object-fit: cover;">
+                {% else %}
+                <div style="width: 100%; aspect-ratio: 4/3; background: var(--color-bg-tertiary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                    </svg>
+                </div>
+                {% endif %}
+                {% if service.is_featured %}
+                <span style="position: absolute; top: var(--spacing-md); left: var(--spacing-md); background: var(--color-accent); color: var(--btn-primary-text); padding: var(--spacing-xs) var(--spacing-md); border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Featured
+                </span>
+                {% endif %}
+            </div>
+
+            <!-- Details -->
+            <div>
+                {% if service.category %}
+                <span class="text-accent" style="font-size: var(--font-size-sm); text-transform: uppercase; letter-spacing: 0.1em;">{{ service.category.name }}</span>
+                {% endif %}
+
+                <h1 style="margin: var(--spacing-sm) 0 var(--spacing-md);">{{ service.name }}</h1>
+
+                <div class="flex gap-3" style="margin-bottom: var(--spacing-xl);">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); color: var(--color-text-muted);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span>{{ service.duration_minutes }} minutes</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: var(--spacing-xl);">
+                    {% if service.sale_price %}
+                    <div class="flex items-center gap-2">
+                        <span style="font-size: var(--font-size-3xl); font-weight: 700; color: var(--color-accent);">₹{{ service.sale_price }}</span>
+                        <span style="font-size: var(--font-size-lg); color: var(--color-text-muted); text-decoration: line-through;">₹{{ service.price }}</span>
+                        <span style="background: var(--color-error); color: white; padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); font-size: var(--font-size-xs); font-weight: 600;">
+                            SAVE ₹{{ service.price|add:service.sale_price|floatformat:0 }}
+                        </span>
+                    </div>
+                    {% else %}
+                    <span style="font-size: var(--font-size-3xl); font-weight: 700; color: var(--color-accent);">₹{{ service.price }}</span>
+                    {% endif %}
+                </div>
+
+                {% if service.description %}
+                <p style="line-height: 1.8; color: var(--color-text-secondary); margin-bottom: var(--spacing-xl);">
+                    {{ service.description }}
+                </p>
+                {% endif %}
+
+                <a href="{% url 'booking:create' %}?service={{ service.pk }}" class="btn btn-primary btn-lg" style="width: 100%;">
+                    Book This Service
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Available Stylists -->
+{% if staff_members %}
+<section class="section">
+    <div class="container" style="max-width: 1000px;">
+        <h2 style="margin-bottom: var(--spacing-xl);">Available Stylists</h2>
+
+        <div class="grid grid-cols-3 gap-2">
+            {% for staff in staff_members %}
+            <div class="card" style="text-align: center;">
+                <div class="card-body">
+                    <div style="width: 100px; height: 100px; margin: 0 auto var(--spacing-lg); border-radius: var(--radius-full); overflow: hidden; border: 3px solid var(--color-accent);">
+                        {% if staff.avatar %}
+                        <img src="{{ staff.avatar.url }}" alt="{{ staff.user.full_name }}"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                        <div style="width: 100%; height: 100%; background: var(--color-bg-tertiary); display: flex; align-items: center; justify-content: center;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <h4 style="margin-bottom: var(--spacing-xs);">{{ staff.user.full_name }}</h4>
+                    <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-md);">{{ staff.title }}</p>
+
+                    {% if staff.years_experience %}
+                    <p style="font-size: var(--font-size-sm); color: var(--color-accent); margin-bottom: var(--spacing-lg);">
+                        {{ staff.years_experience }}+ years experience
+                    </p>
+                    {% endif %}
+
+                    <a href="{% url 'booking:create' %}?service={{ service.pk }}&staff={{ staff.pk }}"
+                       class="btn btn-secondary" style="width: 100%;">
+                        Book with {{ staff.user.first_name }}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Related Services -->
+{% if related_services %}
+<section class="section" style="background: var(--color-bg-secondary);">
+    <div class="container" style="max-width: 1000px;">
+        <h2 style="margin-bottom: var(--spacing-xl);">You May Also Like</h2>
+
+        <div class="grid grid-cols-3 gap-2">
+            {% for related in related_services %}
+            <a href="{% url 'booking:service_detail' related.pk %}" class="card" style="text-decoration: none; color: inherit; transition: transform 0.3s ease;">
+                <div style="aspect-ratio: 16/10; overflow: hidden;">
+                    {% if related.image %}
+                    <img src="{{ related.image.url }}" alt="{{ related.name }}"
+                         style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;">
+                    {% else %}
+                    <div style="width: 100%; height: 100%; background: var(--color-bg-tertiary); display: flex; align-items: center; justify-content: center;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h4 style="margin-bottom: var(--spacing-xs);">{{ related.name }}</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="text-muted" style="font-size: var(--font-size-sm);">{{ related.duration_minutes }} min</span>
+                        <span class="text-accent" style="font-weight: 600;">₹{{ related.current_price }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

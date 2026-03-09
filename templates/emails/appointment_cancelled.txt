@@ -1,0 +1,25 @@
+{{ brand_name }}
+================================
+
+APPOINTMENT CANCELLED
+
+Hello {{ customer.first_name|default:"there" }},
+
+Your appointment has been cancelled. Here are the details:
+
+CANCELLED APPOINTMENT
+---------------------
+Service: {{ service.name }}
+Date: {{ appointment.date|date:"l, F j, Y" }}
+Time: {{ appointment.start_time|time:"g:i A" }}
+
+We're sorry to see you go! If you'd like to book another appointment, we'd love to have you back.
+
+-------------------
+{{ brand_name }}
+{% if brand == 'men' %}
+Al Falah Complex, Gulmarg Road, Magam
+Himalayas Region, Jammu & Kashmir
+{% else %}
+Pannu Complex, SCF-12, Utrathiya, Zirakpur, Punjab 140603
+{% endif %}

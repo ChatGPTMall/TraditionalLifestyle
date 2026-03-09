@@ -1,0 +1,1892 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Brooklyn Luxury Barbershop - Premium Grooming Experience{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ==========================================
+   HERO SECTION
+   ========================================== */
+.hero-brooklyn {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(26, 26, 26, 0.9) 50%, rgba(13, 13, 13, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1920&q=80') center/cover no-repeat;
+    overflow: hidden;
+}
+
+/* Animated Background Grid */
+.hero-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* Floating Gold Particles */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 8s infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0);
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1);
+    }
+}
+
+/* Hero Content */
+.hero-content-wrapper {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 var(--spacing-xl);
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--spacing-xl);
+}
+
+.hero-badge-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.hero-title-wrapper {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+}
+
+.hero-main-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    line-height: 1.1;
+    color: var(--color-text);
+    margin: 0;
+    white-space: nowrap;
+}
+
+.hero-main-title .highlight {
+    color: var(--color-accent);
+    position: relative;
+    display: inline;
+}
+
+.hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-style: italic;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2xl);
+    opacity: 0.85;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.hero-divider-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+.hero-divider-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--color-accent);
+    animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(5deg); }
+}
+
+.hero-cta {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-hero {
+    padding: var(--spacing-md) var(--spacing-2xl);
+    font-size: var(--font-size-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+
+.btn-hero:hover::before {
+    left: 100%;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: var(--spacing-2xl);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    animation: bounce 2s infinite;
+}
+
+.scroll-indicator svg {
+    width: 24px;
+    height: 24px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+}
+
+/* ==========================================
+   INTRO SECTION
+   ========================================== */
+.intro-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-bg);
+    position: relative;
+}
+
+.intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3xl);
+    align-items: center;
+}
+
+.intro-image {
+    position: relative;
+}
+
+.intro-image img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+}
+
+.intro-image::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: 20px;
+    bottom: 20px;
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    z-index: -1;
+}
+
+.experience-badge {
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 150px;
+    height: 150px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-bg);
+    box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+}
+
+.experience-badge .number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1;
+}
+
+.experience-badge .text {
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.intro-content h2 {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+.intro-content .accent-text {
+    color: var(--color-accent);
+}
+
+.intro-content p {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-lg);
+}
+
+.intro-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.intro-feature {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+
+.intro-feature:hover {
+    background: var(--color-bg-tertiary);
+    transform: translateX(5px);
+}
+
+.intro-feature svg {
+    width: 24px;
+    height: 24px;
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   SERVICES SECTION
+   ========================================== */
+.services-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-bg-secondary);
+}
+
+.services-header {
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.services-header .section-label {
+    color: var(--color-accent);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.services-header h2 {
+    font-size: var(--font-size-5xl);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+}
+
+.service-card {
+    position: relative;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+.service-card-image {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+}
+
+.service-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.service-card:hover .service-card-image img {
+    transform: scale(1.1);
+}
+
+.service-card-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, var(--color-bg-card), transparent);
+}
+
+.service-card-content {
+    padding: var(--spacing-xl);
+    padding-top: 0;
+    position: relative;
+    margin-top: -40px;
+    z-index: 1;
+}
+
+.service-card-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+}
+
+.service-card-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--color-bg);
+}
+
+.service-card h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-sm);
+}
+
+.service-card p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.service-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+}
+
+.service-price {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+.service-duration {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.services-cta {
+    text-align: center;
+    margin-top: var(--spacing-3xl);
+}
+
+/* ==========================================
+   GALLERY SECTION
+   ========================================== */
+.gallery-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-bg);
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 250px);
+    gap: var(--spacing-md);
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.gallery-item:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.gallery-item:hover::after {
+    opacity: 1;
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-lg);
+    color: white;
+    transform: translateY(100%);
+    transition: transform var(--transition-base);
+    z-index: 1;
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+}
+
+/* ==========================================
+   TEAM SECTION
+   ========================================== */
+.team-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-bg-secondary);
+}
+
+.team-header {
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+}
+
+.team-card {
+    text-align: center;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    transition: transform var(--transition-base);
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+}
+
+.team-avatar {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto var(--spacing-xl);
+}
+
+.team-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid var(--color-accent);
+}
+
+.team-avatar::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border: 2px dashed var(--color-accent);
+    border-radius: 50%;
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+.team-card h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-xs);
+}
+
+.team-role {
+    color: var(--color-accent);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    margin-bottom: var(--spacing-md);
+}
+
+.team-card p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+/* ==========================================
+   STATS SECTION
+   ========================================== */
+.stats-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--gradient-accent);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-xl);
+    text-align: center;
+}
+
+.stat-item {
+    color: var(--color-bg);
+}
+
+.stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: var(--spacing-sm);
+}
+
+.stat-label {
+    font-size: var(--font-size-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+}
+
+/* ==========================================
+   TESTIMONIALS
+   ========================================== */
+.testimonials-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-bg);
+}
+
+.testimonials-header {
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.testimonials-slider {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+}
+
+.testimonial-card {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    position: relative;
+}
+
+.testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-xl);
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem;
+    color: var(--color-accent);
+    opacity: 0.2;
+    line-height: 1;
+}
+
+.testimonial-content {
+    font-size: var(--font-size-lg);
+    font-style: italic;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-xl);
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.testimonial-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-accent);
+}
+
+.testimonial-name {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.testimonial-stars {
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+}
+
+/* ==========================================
+   CTA SECTION
+   ========================================== */
+.cta-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-bg-secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-content h2 {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.cta-content p {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2xl);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Animated Scissors Background */
+.cta-scissors {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    opacity: 0.05;
+}
+
+.cta-scissors.left {
+    left: -100px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-30deg);
+}
+
+.cta-scissors.right {
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%) rotate(30deg);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 1024px) {
+    .intro-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-2xl);
+    }
+
+    .intro-image {
+        order: -1;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 200px);
+    }
+
+    .gallery-item:first-child {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-main-title {
+        white-space: normal;
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .services-grid,
+    .team-grid,
+    .testimonials-slider {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .gallery-item:first-child {
+        grid-column: span 1;
+    }
+
+    .gallery-item {
+        height: 250px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+    }
+
+    .stat-number {
+        font-size: 3rem;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-hero {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .intro-features {
+        grid-template-columns: 1fr;
+    }
+
+    .experience-badge {
+        width: 120px;
+        height: 120px;
+        bottom: -20px;
+        right: -10px;
+    }
+
+    .experience-badge .number {
+        font-size: 2.5rem;
+    }
+}
+
+/* ==========================================
+   VISIT US / LOCATION SECTION - MODERN
+   ========================================== */
+.visit-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--color-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.visit-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at top right, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.visit-header {
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.visit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--spacing-2xl);
+    align-items: stretch;
+}
+
+/* Contact Info Side */
+.visit-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.visit-card {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.visit-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-accent);
+    transform: scaleY(0);
+    transition: transform var(--transition-base);
+}
+
+.visit-card:hover {
+    border-color: var(--color-accent);
+    transform: translateX(5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.visit-card:hover::before {
+    transform: scaleY(1);
+}
+
+.visit-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.visit-card-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.visit-card-icon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--color-accent);
+}
+
+.visit-card-header h3 {
+    font-size: var(--font-size-lg);
+    margin: 0;
+}
+
+.visit-card p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+    font-size: var(--font-size-md);
+}
+
+.visit-card a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.visit-card a:hover {
+    color: var(--color-text);
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+
+.contact-link:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.contact-link svg {
+    width: 18px;
+    height: 18px;
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+.contact-link span {
+    color: var(--color-text-secondary);
+}
+
+/* Hours Grid */
+.hours-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+}
+
+.hour-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.hour-item:last-child {
+    border-bottom: none;
+}
+
+.hour-day {
+    color: var(--color-text-secondary);
+}
+
+.hour-time {
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+/* Map Side */
+.visit-map-wrapper {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    min-height: 450px;
+}
+
+.visit-map-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--color-bg-secondary), transparent);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.visit-map {
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    display: block;
+    filter: grayscale(20%) contrast(1.1);
+    transition: filter var(--transition-base);
+}
+
+.visit-map-wrapper:hover .visit-map {
+    filter: grayscale(0%) contrast(1);
+}
+
+.map-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-lg);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    z-index: 2;
+}
+
+.map-overlay-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.map-address {
+    color: #ffffff;
+}
+
+.map-address h4 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-accent);
+}
+
+.map-address p {
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.btn-directions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all var(--transition-base);
+}
+
+.btn-directions:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+}
+
+.btn-directions svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .visit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .visit-map-wrapper {
+        min-height: 350px;
+    }
+
+    .visit-map {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hours-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .map-overlay-content {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+}
+
+.story-section,
+.location-section,
+.founder-section {
+    padding: 6rem 0;
+    background: var(--color-dark);
+}
+
+.story-section .story-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.story-card,
+.location-card,
+.founder-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.location-card h3,
+.story-card h3,
+.founder-card h3 {
+    margin-bottom: 0.75rem;
+    color: var(--color-gold);
+}
+
+.location-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+}
+
+.location-list li {
+    line-height: 1.6;
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.founder-meta {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ==========================================
+     HERO SECTION
+     ========================================== -->
+<section class="hero-brooklyn">
+    <!-- Animated Background -->
+    <div class="hero-grid"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Hero Content -->
+    <div class="hero-content-wrapper">
+        <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span>Gulmarg Road, Magam · Himalayas</span>
+        </div>
+
+        <div class="hero-title-wrapper">
+            <h1 class="hero-main-title">
+                BROOKLYN <span class="highlight">LUXURY</span> BARBERSHOP
+            </h1>
+        </div>
+
+        <div class="hero-divider">
+            <div class="hero-divider-line"></div>
+            <svg class="hero-divider-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="6" cy="6" r="3"/>
+                <circle cx="6" cy="18" r="3"/>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+            </svg>
+            <div class="hero-divider-line"></div>
+        </div>
+
+        <p class="hero-subtitle">
+            Where style meets tradition.
+        </p>
+
+        <div class="hero-cta">
+            <a href="{% url 'booking:create' %}" class="btn btn-primary btn-hero">
+                Book Your Experience
+            </a>
+            <a href="{% url 'booking:services' %}" class="btn btn-secondary btn-hero">
+                Explore Services
+            </a>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+    </div>
+</section>
+
+<!-- ==========================================
+     INTRO SECTION
+     ========================================== -->
+<section class="intro-section">
+    <div class="container">
+        <div class="intro-grid">
+            <div class="intro-image">
+                <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800" alt="Brooklyn Barbershop Interior">
+                <div class="experience-badge">
+                    <span class="number">10+</span>
+                    <span class="text">Years</span>
+                </div>
+            </div>
+
+            <div class="intro-content">
+                <p class="section-subtitle">About Us</p>
+                <h2>The Art of <span class="accent-text">Classic</span> Grooming</h2>
+                <p>
+                    Brooklyn Luxury Barbershop is where style meets tradition. Our skilled barbers deliver top-quality grooming for men of all ages, blending timeless techniques with modern precision.
+                </p>
+                <p>
+                    Whether you're after a classic cut, a contemporary style, or a sharp beard trim, we make sure you leave looking refined and feeling confident.
+                </p>
+
+                <div class="intro-features">
+                    <div class="intro-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Master Barbers</span>
+                    </div>
+                    <div class="intro-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Premium Products</span>
+                    </div>
+                    <div class="intro-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Himalayan Setting</span>
+                    </div>
+                    <div class="intro-feature">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>Precision Barbering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     VISIT US SECTION - MODERN WITH MAP
+     ========================================== -->
+<section class="visit-section">
+    <div class="container">
+        <div class="visit-header">
+            <p class="section-subtitle">Visit Us</p>
+            <h2>Find Our <span class="text-accent">Location</span></h2>
+            <div class="gold-line"></div>
+        </div>
+
+        <div class="visit-grid">
+            <!-- Contact Info Cards -->
+            <div class="visit-info">
+                <!-- Address Card -->
+                <div class="visit-card">
+                    <div class="visit-card-header">
+                        <div class="visit-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <h3>Our Address</h3>
+                    </div>
+                    <p>Al Falah Complex, Gulmarg Road<br>Magam, Himalayas Region<br>Jammu & Kashmir, India</p>
+                </div>
+
+                <!-- Contact Card -->
+                <div class="visit-card">
+                    <div class="visit-card-header">
+                        <div class="visit-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                            </svg>
+                        </div>
+                        <h3>Contact Us</h3>
+                    </div>
+                    <div class="contact-links">
+                        <a href="tel:+1951295122" class="contact-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                            </svg>
+                            <span>+1951295122</span>
+                        </a>
+                        <a href="https://wa.me/918899918595" target="_blank" class="contact-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                            <span>+91 8899918595 (WhatsApp)</span>
+                        </a>
+                        <a href="mailto:contact@brooklynluxurybarbershop.com" class="contact-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <span>contact@brooklynluxurybarbershop.com</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hours Card -->
+                <div class="visit-card">
+                    <div class="visit-card-header">
+                        <div class="visit-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <h3>Opening Hours</h3>
+                    </div>
+                    <div class="hours-grid">
+                        <div class="hour-item">
+                            <span class="hour-day">Mon - Fri</span>
+                            <span class="hour-time">9:00 AM - 8:00 PM</span>
+                        </div>
+                        <div class="hour-item">
+                            <span class="hour-day">Saturday</span>
+                            <span class="hour-time">10:00 AM - 6:00 PM</span>
+                        </div>
+                        <div class="hour-item">
+                            <span class="hour-day">Sunday</span>
+                            <span class="hour-time">Closed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="visit-map-wrapper">
+                <iframe
+                    class="visit-map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d825.9946611528301!2d74.59902515965099!3d34.09568752560301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e19994295c7967%3A0x45942fb1d8c34f02!2sBrooklyn%20Luxury%20Barbershop!5e0!3m2!1sen!2sin!4v1772935510439!5m2!1sen!2sin"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                <div class="map-overlay">
+                    <div class="map-overlay-content">
+                        <div class="map-address">
+                            <h4>Brooklyn Luxury Barbershop</h4>
+                            <p>Al Falah Complex, Gulmarg Road, Magam</p>
+                        </div>
+                        <a href="https://maps.google.com/?q=Brooklyn+Luxury+Barbershop+Magam" target="_blank" class="btn-directions">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                            Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     SERVICES SECTION
+     ========================================== -->
+<section class="services-section">
+    <div class="container">
+        <div class="services-header">
+            <p class="section-label">What We Offer</p>
+            <h2>Signature Services</h2>
+            <div class="gold-line gold-line-long"></div>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-card-image">
+                    <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600" alt="Classic Haircut">
+                </div>
+                <div class="service-card-content">
+                    <div class="service-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="6" cy="6" r="3"/>
+                            <circle cx="6" cy="18" r="3"/>
+                            <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                            <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                            <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <h3>Classic Haircut</h3>
+                    <p>Precision scissor cut tailored to your face shape and personal style.</p>
+                    <div class="service-card-footer">
+                        <span class="service-price">₹999</span>
+                        <span class="service-duration">30 min</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-card-image">
+                    <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600" alt="Hot Towel Shave">
+                </div>
+                <div class="service-card-content">
+                    <div class="service-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 3v18"/>
+                            <path d="M6 3a2 2 0 012 2v1a2 2 0 01-2 2"/>
+                            <path d="M6 8a2 2 0 012 2v1a2 2 0 01-2 2"/>
+                            <path d="M18 3v7a4 4 0 01-4 4H6"/>
+                        </svg>
+                    </div>
+                    <h3>Hot Towel Shave</h3>
+                    <p>Traditional straight razor shave with hot towels and premium oils.</p>
+                    <div class="service-card-footer">
+                        <span class="service-price">₹899</span>
+                        <span class="service-duration">35 min</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-card-image">
+                    <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600" alt="Beard Grooming">
+                </div>
+                <div class="service-card-content">
+                    <div class="service-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <path d="M12 8v8"/>
+                            <path d="M8 12h8"/>
+                        </svg>
+                    </div>
+                    <h3>Beard Grooming</h3>
+                    <p>Shape, trim, and condition your beard to perfection.</p>
+                    <div class="service-card-footer">
+                        <span class="service-price">₹599</span>
+                        <span class="service-duration">20 min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="services-cta">
+            <a href="{% url 'booking:services' %}" class="btn btn-secondary btn-lg">View All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     GALLERY SECTION
+     ========================================== -->
+<section class="gallery-section">
+    <div class="container">
+        <div class="gallery-header">
+            <p class="section-subtitle">Our Work</p>
+            <h2>The Gallery</h2>
+            <div class="gold-line"></div>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=800" alt="Barbershop Interior">
+                <div class="gallery-overlay">
+                    <h4>Our Space</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400" alt="Haircut">
+                <div class="gallery-overlay">
+                    <h4>Precision Cut</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400" alt="Shave">
+                <div class="gallery-overlay">
+                    <h4>Classic Shave</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400" alt="Styling">
+                <div class="gallery-overlay">
+                    <h4>Expert Styling</h4>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400" alt="Beard Trim">
+                <div class="gallery-overlay">
+                    <h4>Beard Artistry</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     STATS SECTION
+     ========================================== -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="10">0</span>+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="10000">0</span>+</div>
+                <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="6">0</span></div>
+                <div class="stat-label">Master Barbers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number"><span class="counter" data-target="5">0</span>.0</div>
+                <div class="stat-label">Star Rating</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     TEAM SECTION
+     ========================================== -->
+<section class="team-section">
+    <div class="container">
+        <div class="team-header">
+            <p class="section-subtitle">The Artists</p>
+            <h2>Meet Our Barbers</h2>
+            <div class="gold-line"></div>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" alt="Marcus Johnson">
+                </div>
+                <h3>Marcus Johnson</h3>
+                <p class="team-role">Master Barber</p>
+                <p>15 years of expertise in classic cuts and traditional hot shaves.</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300" alt="David Chen">
+                </div>
+                <h3>David Chen</h3>
+                <p class="team-role">Senior Barber</p>
+                <p>Specializing in modern fades and creative designs.</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300" alt="James Williams">
+                </div>
+                <h3>James Williams</h3>
+                <p class="team-role">Barber & Stylist</p>
+                <p>Known for his meticulous attention to detail and beard artistry.</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'booking:staff' %}" class="btn btn-secondary">View Full Team</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     TESTIMONIALS SECTION
+     ========================================== -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="testimonials-header">
+            <p class="section-subtitle">What They Say</p>
+            <h2>Client Reviews</h2>
+            <div class="gold-line"></div>
+        </div>
+
+        <div class="testimonials-slider">
+            <div class="testimonial-card">
+                <p class="testimonial-content">
+                    "The best barber experience I've ever had. Marcus understood exactly what I wanted and delivered beyond my expectations. The attention to detail is unmatched."
+                </p>
+                <div class="testimonial-author">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" alt="Michael S." class="testimonial-avatar">
+                    <div>
+                        <p class="testimonial-name">Michael S.</p>
+                        <p class="testimonial-stars">★★★★★</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <p class="testimonial-content">
+                    "I've been coming here for 3 years and refuse to go anywhere else. The atmosphere, the service, the results—everything is top tier. Worth every penny."
+                </p>
+                <div class="testimonial-author">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="Robert T." class="testimonial-avatar">
+                    <div>
+                        <p class="testimonial-name">Robert T.</p>
+                        <p class="testimonial-stars">★★★★★</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     CTA SECTION
+     ========================================== -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready for the <span class="text-accent">Brooklyn</span> Experience?</h2>
+            <p>Book your appointment today and discover why we're the most trusted barbershop in Magam.</p>
+            <div class="cta-buttons">
+                <a href="{% url 'booking:create' %}" class="btn btn-primary btn-lg">Book Appointment</a>
+                <a href="tel:+15551234567" class="btn btn-secondary btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                    </svg>
+                    Call Us
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative Scissors -->
+    <svg class="cta-scissors left" viewBox="0 0 200 200">
+        <g fill="var(--color-accent)">
+            <path d="M100,100 L180,40 Q190,35 185,45 L110,100"/>
+            <path d="M100,100 L180,160 Q190,165 185,155 L110,100"/>
+            <circle cx="100" cy="100" r="15"/>
+        </g>
+    </svg>
+    <svg class="cta-scissors right" viewBox="0 0 200 200">
+        <g fill="var(--color-accent)">
+            <path d="M100,100 L180,40 Q190,35 185,45 L110,100"/>
+            <path d="M100,100 L180,160 Q190,165 185,155 L110,100"/>
+            <circle cx="100" cy="100" r="15"/>
+        </g>
+    </svg>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Create floating particles
+function createParticles() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        container.appendChild(particle);
+    }
+}
+
+// Counter animation
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter');
+
+    counters.forEach(counter => {
+        const target = parseInt(counter.dataset.target);
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const updateCounter = () => {
+            current += step;
+            if (current < target) {
+                counter.textContent = Math.floor(current).toLocaleString();
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.textContent = target.toLocaleString();
+            }
+        };
+
+        // Start animation when element is in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    updateCounter();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(counter);
+    });
+}
+
+// Scroll-triggered animations
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.intro-section, .service-card, .gallery-item, .team-card, .testimonial-card, .stat-item');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, index * 100);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+}
+
+// GSAP Animations (if available)
+function initGSAPAnimations() {
+    if (typeof gsap === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero entrance
+    gsap.from('.hero-badge', {
+        y: -50,
+        opacity: 0,
+        duration: 1,
+        delay: 0.3
+    });
+
+    gsap.from('.hero-main-title', {
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        delay: 0.5
+    });
+
+    gsap.from('.hero-divider', {
+        scaleX: 0,
+        opacity: 0,
+        duration: 1,
+        delay: 1
+    });
+
+    gsap.from('.hero-subtitle', {
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        delay: 1.2
+    });
+
+    gsap.from('.hero-cta', {
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        delay: 1.4
+    });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    animateCounters();
+    initScrollAnimations();
+    initGSAPAnimations();
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+</script>
+{% endblock %}

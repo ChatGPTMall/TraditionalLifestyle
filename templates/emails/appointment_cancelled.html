@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Cancelled</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f5f5f5;
+        }
+        .wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .email-container {
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            padding: 30px;
+            text-align: center;
+        }
+        .header-men {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+        }
+        .header-women {
+            background: linear-gradient(135deg, #fffef9 0%, #fdfbf7 100%);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+        .logo-men { color: #d4af37; }
+        .logo-women { color: #87d762; }
+        .content {
+            padding: 40px 30px;
+        }
+        .cancelled-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .appointment-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            opacity: 0.7;
+        }
+        .appointment-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .appointment-label {
+            width: 100px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888;
+        }
+        .appointment-value {
+            flex: 1;
+            color: #666;
+            text-decoration: line-through;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 14px 30px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            margin: 20px 0;
+        }
+        .cta-men {
+            background: #d4af37;
+            color: #0d0d0d;
+        }
+        .cta-women {
+            background: #87d762;
+            color: #ffffff;
+        }
+        .footer {
+            padding: 30px;
+            text-align: center;
+            background: #f9f9f9;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="email-container">
+            <div class="header header-{{ brand }}">
+                <div class="logo logo-{{ brand }}">{{ brand_name }}</div>
+            </div>
+
+            <div class="content">
+                <span class="cancelled-badge">Appointment Cancelled</span>
+
+                <p>Hello {{ customer.first_name|default:"there" }},</p>
+
+                <p>Your appointment has been cancelled. Here are the details of the cancelled appointment:</p>
+
+                <div class="appointment-card">
+                    <div class="appointment-row">
+                        <div class="appointment-label">Service</div>
+                        <div class="appointment-value">{{ service.name }}</div>
+                    </div>
+                    <div class="appointment-row">
+                        <div class="appointment-label">Date</div>
+                        <div class="appointment-value">{{ appointment.date|date:"l, F j, Y" }}</div>
+                    </div>
+                    <div class="appointment-row">
+                        <div class="appointment-label">Time</div>
+                        <div class="appointment-value">{{ appointment.start_time|time:"g:i A" }}</div>
+                    </div>
+                </div>
+
+                <p>We're sorry to see you go! If you'd like to book another appointment, we'd love to have you back.</p>
+
+                <center>
+                    <a href="#" class="cta-button cta-{{ brand }}">Book New Appointment</a>
+                </center>
+            </div>
+
+            <div class="footer">
+                <p>
+                    {{ brand_name }} |
+                    {% if brand == 'men' %}
+                    Al Falah Complex, Gulmarg Road, Magam
+                    {% else %}
+                    Pannu Complex, SCF-12, Utrathiya, Zirakpur, Punjab 140603
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

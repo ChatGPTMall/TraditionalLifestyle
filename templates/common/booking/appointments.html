@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+<section class="page-header" style="padding: var(--spacing-2xl) 0; background: var(--color-bg-secondary); text-align: center;">
+    <div class="container">
+        <h1>My Appointments</h1>
+        <p class="text-muted">View and manage your bookings</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container" style="max-width: 900px;">
+
+        <!-- Upcoming Appointments -->
+        <div style="margin-bottom: var(--spacing-3xl);">
+            <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-xl);">
+                <h2>Upcoming Appointments</h2>
+                <a href="{% url 'booking:create' %}" class="btn btn-primary">Book New</a>
+            </div>
+
+            {% if upcoming %}
+            <div class="flex flex-col gap-2">
+                {% for appointment in upcoming %}
+                <div class="card" style="overflow: visible;">
+                    <div class="card-body">
+                        <div class="flex justify-between items-start" style="flex-wrap: wrap; gap: var(--spacing-md);">
+                            <!-- Left: Details -->
+                            <div class="flex gap-3">
+                                <!-- Date Badge -->
+                                <div style="text-align: center; min-width: 70px;">
+                                    <div style="background: var(--color-accent); color: var(--btn-primary-text); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-md) var(--radius-md) 0 0; font-size: var(--font-size-xs); text-transform: uppercase;">
+                                        {{ appointment.date|date:"M" }}
+                                    </div>
+                                    <div style="background: var(--color-bg-secondary); padding: var(--spacing-md); border-radius: 0 0 var(--radius-md) var(--radius-md);">
+                                        <div style="font-size: var(--font-size-2xl); font-weight: 700; line-height: 1;">{{ appointment.date|date:"j" }}</div>
+                                        <div style="font-size: var(--font-size-xs); color: var(--color-text-muted);">{{ appointment.date|date:"D" }}</div>
+                                    </div>
+                                </div>
+
+                                <!-- Info -->
+                                <div>
+                                    <h3 style="margin-bottom: var(--spacing-xs);">{{ appointment.service.name }}</h3>
+                                    <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-sm);">
+                                        with {{ appointment.staff.user.full_name }}
+                                    </p>
+                                    <div class="flex gap-2 items-center" style="flex-wrap: wrap;">
+                                        <span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--font-size-sm);">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M12 6v6l4 2"/>
+                                            </svg>
+                                            {{ appointment.start_time|time:"g:i A" }}
+                                        </span>
+                                        <span style="display: inline-flex; align-items: center; gap: 4px; font-size: var(--font-size-sm);">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                                            </svg>
+                                            ₹{{ appointment.total }}
+                                        </span>
+                                        <span class="status-badge status-{{ appointment.status }}">
+                                            {{ appointment.get_status_display }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Actions -->
+                            <div class="flex gap-1">
+                                <a href="{% url 'booking:appointment_detail' appointment.pk %}" class="btn btn-secondary" style="font-size: var(--font-size-xs); padding: var(--spacing-xs) var(--spacing-md);">
+                                    Details
+                                </a>
+                                {% if appointment.can_cancel %}
+                                <form method="post" action="{% url 'booking:appointment_cancel' appointment.pk %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn" style="font-size: var(--font-size-xs); padding: var(--spacing-xs) var(--spacing-md); background: transparent; border: 1px solid var(--color-error); color: var(--color-error);"
+                                            onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                        Cancel
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center" style="padding: var(--spacing-3xl); background: var(--color-bg-secondary); border-radius: var(--radius-lg);">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1.5" style="margin-bottom: var(--spacing-md);">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <p class="text-muted" style="margin-bottom: var(--spacing-lg);">No upcoming appointments</p>
+                <a href="{% url 'booking:create' %}" class="btn btn-primary">Book Your First Appointment</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Past Appointments -->
+        {% if past %}
+        <div>
+            <h2 style="margin-bottom: var(--spacing-xl);">Past Appointments</h2>
+            <div class="flex flex-col gap-2">
+                {% for appointment in past %}
+                <div class="card" style="opacity: 0.7;">
+                    <div class="card-body" style="padding: var(--spacing-md) var(--spacing-lg);">
+                        <div class="flex justify-between items-center">
+                            <div class="flex gap-2 items-center">
+                                <span style="font-size: var(--font-size-sm); color: var(--color-text-muted);">
+                                    {{ appointment.date|date:"M j, Y" }}
+                                </span>
+                                <span style="font-weight: 500;">{{ appointment.service.name }}</span>
+                                <span class="status-badge status-{{ appointment.status }}">
+                                    {{ appointment.get_status_display }}
+                                </span>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <span class="text-muted">₹{{ appointment.total }}</span>
+                                <a href="{% url 'booking:appointment_detail' appointment.pk %}" style="font-size: var(--font-size-sm);">
+                                    View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+    .status-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-xs);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .status-pending {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+    .status-confirmed {
+        background: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+    }
+    .status-completed {
+        background: rgba(34, 197, 94, 0.1);
+        color: #22c55e;
+    }
+    .status-cancelled {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+    .status-no_show {
+        background: rgba(107, 114, 128, 0.1);
+        color: #6b7280;
+    }
+</style>
+{% endblock %}

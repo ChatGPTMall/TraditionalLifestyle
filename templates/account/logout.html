@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout | TraditionalLifestyle</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .logout-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logout-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: #d4af37;
+            margin-bottom: 2.5rem;
+        }
+
+        .logout-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .logout-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #d4af37;
+        }
+
+        .logout-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .logout-message {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .logout-form {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            color: #0d0d0d;
+            background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+            background-size: 200% 200%;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-position: 100% 0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-outline {
+            color: rgba(255, 255, 255, 0.7);
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+        }
+
+        @media (max-width: 480px) {
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-container">
+        <div class="logout-brand">TraditionalLifestyle</div>
+
+        <div class="logout-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+        </div>
+
+        <h1 class="logout-title">Sign Out</h1>
+        <p class="logout-message">Are you sure you want to sign out of your account?</p>
+
+        <form class="logout-form" method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+            {% endif %}
+            <div class="btn-group">
+                <a href="{% url 'core:home' %}" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">Sign Out</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        tl.to('.logout-icon', { opacity: 1, scale: 1, duration: 0.6 })
+          .to('.logout-title', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+          .to('.logout-message', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+          .to('.logout-form', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3');
+    </script>
+</body>
+</html>

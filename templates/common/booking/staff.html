@@ -1,0 +1,990 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us | {{ brand_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   ABOUT PAGE - PREMIUM STYLES
+   ============================================ */
+
+/* Hero Section */
+.about-hero {
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    {% if brand == 'men' %}
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(26, 26, 26, 0.85) 50%, rgba(13, 13, 13, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1920&q=80') center/cover no-repeat;
+    {% else %}
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(50, 40, 20, 0.7) 50%, rgba(0, 0, 0, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&q=80') center/cover no-repeat;
+    {% endif %}
+    background-attachment: fixed;
+}
+
+.about-hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: var(--spacing-3xl) var(--spacing-xl);
+}
+
+.about-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: rgba(var(--color-accent-rgb), 0.15);
+    border: 1px solid rgba(var(--color-accent-rgb), 0.4);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: var(--spacing-lg);
+    backdrop-filter: blur(10px);
+}
+
+.about-hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: var(--spacing-md);
+    color: #ffffff;
+}
+
+.about-hero-subtitle {
+    font-family: var(--font-accent);
+    font-size: var(--font-size-xl);
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Section Styling */
+.about-section {
+    padding: var(--spacing-3xl) 0;
+}
+
+.about-section-alt {
+    background: var(--color-bg-secondary);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-3xl);
+}
+
+.section-badge {
+    display: inline-block;
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: var(--font-size-lg);
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-title {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.section-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.section-divider .line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+.section-divider .ornament {
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--color-accent);
+    transform: rotate(45deg);
+}
+
+/* Brand Story Grid */
+.story-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.story-card {
+    background: var(--color-bg-card);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-base);
+}
+
+.story-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-accent);
+    transform: scaleY(0);
+    transition: transform var(--transition-base);
+}
+
+.story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.story-card:hover::before {
+    transform: scaleY(1);
+}
+
+.story-card h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-accent);
+}
+
+.story-card p {
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+}
+
+/* Founder Section */
+.founder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--spacing-3xl);
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.founder-image {
+    position: relative;
+}
+
+.founder-image-wrapper {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.founder-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: 15px;
+    bottom: 15px;
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    z-index: -1;
+}
+
+.founder-image img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+}
+
+.founder-badge {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+}
+
+.founder-badge .years {
+    font-family: 'Bebas Neue', var(--font-heading);
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.founder-badge .text {
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.founder-content h3 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-sm);
+}
+
+.founder-title {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: var(--font-size-lg);
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-xl);
+}
+
+.founder-content p {
+    color: var(--color-text-secondary);
+    line-height: 1.9;
+    margin-bottom: var(--spacing-lg);
+}
+
+.founder-credentials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xl);
+}
+
+.credential-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(var(--color-accent-rgb), 0.1);
+    border: 1px solid rgba(var(--color-accent-rgb), 0.3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+}
+
+.credential-tag svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Location Cards */
+.locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.location-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--color-border);
+    text-align: center;
+    transition: all var(--transition-base);
+}
+
+.location-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-accent);
+}
+
+.location-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto var(--spacing-md);
+    background: rgba(var(--color-accent-rgb), 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.location-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--color-accent);
+}
+
+.location-card h4 {
+    margin-bottom: var(--spacing-md);
+}
+
+.location-card p {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.7;
+}
+
+/* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.team-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    text-align: center;
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-base);
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.team-avatar {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto var(--spacing-lg);
+    position: relative;
+}
+
+.team-avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--color-accent);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-avatar svg {
+    width: 50px;
+    height: 50px;
+    color: var(--color-accent);
+}
+
+.experience-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--color-accent);
+    color: var(--btn-primary-text);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.team-card h3 {
+    margin-bottom: var(--spacing-xs);
+}
+
+.team-role {
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.team-bio {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.7;
+    margin-bottom: var(--spacing-lg);
+}
+
+.team-specialties {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.specialty-tag {
+    padding: 4px 12px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+}
+
+.team-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+/* Contact Section */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.contact-item {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-base);
+}
+
+.contact-item:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-3px);
+}
+
+.contact-item svg {
+    width: 32px;
+    height: 32px;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-md);
+}
+
+.contact-item h4 {
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-base);
+}
+
+.contact-item p,
+.contact-item a {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+}
+
+.contact-item a:hover {
+    color: var(--color-accent);
+}
+
+/* Values Section */
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-xl);
+}
+
+.value-item {
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+.value-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto var(--spacing-lg);
+    background: rgba(var(--color-accent-rgb), 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+}
+
+.value-item:hover .value-icon {
+    background: var(--color-accent);
+    transform: scale(1.1);
+}
+
+.value-item:hover .value-icon svg {
+    color: var(--color-bg);
+}
+
+.value-icon svg {
+    width: 32px;
+    height: 32px;
+    color: var(--color-accent);
+    transition: color var(--transition-base);
+}
+
+.value-item h4 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.value-item p {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .founder-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .founder-image-wrapper::before {
+        display: none;
+    }
+
+    .founder-badge {
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .story-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .founder-image img {
+        height: 350px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="about-hero-content">
+        <span class="about-hero-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Est. 2024
+        </span>
+        <h1 class="about-hero-title">Our Story</h1>
+        <p class="about-hero-subtitle">
+            {% if brand == 'men' %}
+            Where style meets tradition in the heart of the Himalayas
+            {% else %}
+            Elevating luxury and confidence through premium beauty experiences
+            {% endif %}
+        </p>
+    </div>
+</section>
+
+<!-- Brand Story Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Brand Story</span>
+            <h2 class="section-title">
+                {% if brand == 'men' %}
+                Brooklyn, Reimagined
+                {% else %}
+                The Vintage Vision
+                {% endif %}
+            </h2>
+            <div class="section-divider">
+                <span class="line"></span>
+                <span class="ornament"></span>
+                <span class="line"></span>
+            </div>
+        </div>
+
+        <div class="story-grid">
+            {% if brand == 'men' %}
+            <div class="story-card">
+                <h3>The Name</h3>
+                <p>
+                    Brooklyn is a blend of the names Brooke and Lynn and a tribute to the timeless spirit of Brooklyn. It reflects our balance of heritage craft and modern style, bringing world-class barbering to the mountains.
+                </p>
+            </div>
+            <div class="story-card">
+                <h3>The Setting</h3>
+                <p>
+                    Nestled along Gulmarg Road in Magam, our barbershop sits against the breathtaking Himalayan landscape. The mountains bring a calm, focused energy to every service and make each visit truly memorable.
+                </p>
+            </div>
+            {% else %}
+            <div class="story-card">
+                <h3>Our Mission</h3>
+                <p>
+                    Vintage Salon was established in 2024 in Zirakpur with a mission to elevate luxury beauty services for women. We believe every woman deserves to feel confident and beautiful through expert care and premium products.
+                </p>
+            </div>
+            <div class="story-card">
+                <h3>Our Expertise</h3>
+                <p>
+                    Specializing in hair extensions, hair patches, and chemical treatments, we combine cutting-edge techniques with personalized attention to deliver transformative results that exceed expectations.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Behind the Brand / Founder Section -->
+<section class="about-section about-section-alt">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Behind the Brand</span>
+            <h2 class="section-title">
+                {% if brand == 'men' %}
+                Wajid Salmani
+                {% else %}
+                CreativeZone Academy
+                {% endif %}
+            </h2>
+            <div class="section-divider">
+                <span class="line"></span>
+                <span class="ornament"></span>
+                <span class="line"></span>
+            </div>
+        </div>
+
+        <div class="founder-grid">
+            <div class="founder-image">
+                <div class="founder-image-wrapper">
+                    {% if brand == 'men' %}
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Wajid Salmani">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" alt="CreativeZone Academy">
+                    {% endif %}
+                </div>
+                <div class="founder-badge">
+                    <div class="years">10+</div>
+                    <div class="text">Years Experience</div>
+                </div>
+            </div>
+
+            <div class="founder-content">
+                {% if brand == 'men' %}
+                <h3>Master Barber & Educator</h3>
+                <p class="founder-title">Owner, Brooklyn Luxury Barbershop</p>
+                <p>
+                    Wajid Salmani is a UK GBBA (Great British Barbering Academy) certified barber with over 10 years of professional experience. He currently serves as an educator at Kingsman Barbershop and is recognized as a celebrity barber.
+                </p>
+                <p>
+                    His training and mentorship experience spans across prestigious establishments including Goa Chop Shop Barber & Brand, New Tech Grooming Studio, Kings Men Barbershop Hyderabad, and Kings Men Barbershop Bangalore.
+                </p>
+                <p>
+                    Wajid also delivers professional theory classes at CreativeZone International Salon and Academy, passing on his expertise to the next generation of barbers.
+                </p>
+                <div class="founder-credentials">
+                    <span class="credential-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        UK GBBA Certified
+                    </span>
+                    <span class="credential-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Celebrity Barber
+                    </span>
+                    <span class="credential-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                        Master Educator
+                    </span>
+                </div>
+                {% else %}
+                <h3>CreativeZone International</h3>
+                <p class="founder-title">Salon and Academy, Zirakpur</p>
+                <p>
+                    CreativeZone International Salon and Academy is our dedicated training facility where aspiring stylists learn the art of beauty. Located in Zirakpur, this academy is the foundation of our commitment to excellence.
+                </p>
+                <p>
+                    Our academy offers comprehensive training programs in hair styling, extensions, coloring techniques, and chemical treatments. Students learn from industry experts and gain hands-on experience with premium products.
+                </p>
+                <p>
+                    We believe in nurturing talent and creating professionals who can deliver the same level of excellence that defines the Vintage Salon experience.
+                </p>
+                <div class="founder-credentials">
+                    <span class="credential-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Professional Training
+                    </span>
+                    <span class="credential-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Premium Products
+                    </span>
+                    <span class="credential-tag">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                        Expert Mentors
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Locations Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Visit Us</span>
+            <h2 class="section-title">Our Locations</h2>
+            <div class="section-divider">
+                <span class="line"></span>
+                <span class="ornament"></span>
+                <span class="line"></span>
+            </div>
+        </div>
+
+        <div class="locations-grid">
+            {% if brand == 'men' %}
+            <div class="location-card">
+                <div class="location-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <h4>Brooklyn Luxury Barbershop</h4>
+                <p>
+                    Al Falah Complex, Gulmarg Road<br>
+                    Magam, Himalayas Region<br>
+                    Jammu & Kashmir
+                </p>
+            </div>
+            {% else %}
+            <div class="location-card">
+                <div class="location-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <h4>Magam Town, J&K</h4>
+                <p>Main Branch<br>Jammu & Kashmir</p>
+            </div>
+            <div class="location-card">
+                <div class="location-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <h4>Dehradun</h4>
+                <p>Uttarakhand Branch</p>
+            </div>
+            <div class="location-card">
+                <div class="location-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <h4>Zirakpur</h4>
+                <p>Pannu Complex, SCF-12<br>Utrathiya, Punjab 140603</p>
+            </div>
+            <div class="location-card">
+                <div class="location-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <h4>Kharar</h4>
+                <p>Punjab Branch</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Our Team Section -->
+<section class="about-section about-section-alt">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Meet the Experts</span>
+            <h2 class="section-title">Our Team</h2>
+            <div class="section-divider">
+                <span class="line"></span>
+                <span class="ornament"></span>
+                <span class="line"></span>
+            </div>
+        </div>
+
+        {% if staff_members %}
+        <div class="team-grid">
+            {% for member in staff_members %}
+            <div class="team-card">
+                <div class="team-avatar">
+                    <div class="team-avatar-inner">
+                        {% if member.avatar %}
+                        <img src="{{ member.avatar.url }}" alt="{{ member.user.full_name }}">
+                        {% else %}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        {% endif %}
+                    </div>
+                    {% if member.years_experience %}
+                    <span class="experience-badge">{{ member.years_experience }}+ yrs</span>
+                    {% endif %}
+                </div>
+                <h3>{{ member.user.full_name }}</h3>
+                <p class="team-role">{{ member.title }}</p>
+                {% if member.bio %}
+                <p class="team-bio">{{ member.bio|truncatewords:25 }}</p>
+                {% endif %}
+                {% if member.specializations.exists %}
+                <div class="team-specialties">
+                    {% for service in member.specializations.all|slice:":3" %}
+                    <span class="specialty-tag">{{ service.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="team-actions">
+                    <a href="{% url 'booking:staff_detail' member.pk %}" class="btn btn-secondary" style="font-size: var(--font-size-xs);">View Profile</a>
+                    <a href="{% url 'booking:create' %}?staff={{ member.pk }}" class="btn btn-primary" style="font-size: var(--font-size-xs);">Book Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center" style="padding: var(--spacing-3xl);">
+            <p class="text-muted">Our talented team is ready to serve you. Contact us for more information.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Get in Touch</span>
+            <h2 class="section-title">Contact Us</h2>
+            <div class="section-divider">
+                <span class="line"></span>
+                <span class="ornament"></span>
+                <span class="line"></span>
+            </div>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <h4>Email</h4>
+                {% if brand == 'men' %}
+                <a href="mailto:contact@brooklynluxurybarbershop.com">contact@brooklynluxurybarbershop.com</a>
+                {% else %}
+                <a href="mailto:hello@traditionallifestyle.com">hello@traditionallifestyle.com</a>
+                {% endif %}
+            </div>
+            <div class="contact-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                <h4>Phone</h4>
+                {% if brand == 'men' %}
+                <a href="tel:+1951295122">+1951295122</a><br>
+                <a href="tel:+918899918595">+91 8899918595</a>
+                {% else %}
+                <p>Contact the front desk for location-specific numbers</p>
+                {% endif %}
+            </div>
+            <div class="contact-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <h4>Hours</h4>
+                <p>Mon - Fri: 9am - 8pm<br>Sat: 10am - 6pm<br>Sun: Closed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values Section -->
+<section class="about-section about-section-alt">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Why Choose Us</span>
+            <h2 class="section-title">Our Values</h2>
+            <div class="section-divider">
+                <span class="line"></span>
+                <span class="ornament"></span>
+                <span class="line"></span>
+            </div>
+        </div>
+
+        <div class="values-grid">
+            <div class="value-item">
+                <div class="value-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 15l-2 5l9-13h-6l2-5l-9 13h6z"/>
+                    </svg>
+                </div>
+                <h4>Expert Training</h4>
+                <p>Continuous education in the latest techniques and trends from world-class institutions.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <h4>Premium Quality</h4>
+                <p>We use only the finest products and tools to deliver exceptional results every time.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                    </svg>
+                </div>
+                <h4>Personalized Care</h4>
+                <p>Every client receives individual attention tailored to their unique style and preferences.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M16 8l-4 4-4-4"/>
+                        <path d="M12 12v6"/>
+                    </svg>
+                </div>
+                <h4>Relaxing Atmosphere</h4>
+                <p>A serene environment designed to help you unwind and enjoy the experience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="about-section" style="text-align: center;">
+    <div class="container">
+        <h2 style="margin-bottom: var(--spacing-md);">Ready to Experience the Difference?</h2>
+        <p class="text-muted" style="max-width: 500px; margin: 0 auto var(--spacing-xl);">
+            Book your appointment today and discover why our clients keep coming back.
+        </p>
+        <a href="{% url 'booking:create' %}" class="btn btn-primary btn-lg">Book Your Appointment</a>
+    </div>
+</section>
+{% endblock %}

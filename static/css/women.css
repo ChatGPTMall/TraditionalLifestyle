@@ -1,0 +1,365 @@
+/*
+ * Vintage Salon - Women's Theme Specific Styles
+ */
+
+/* Hero Section */
+.hero-women {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  overflow: hidden;
+}
+
+.hero-women::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2387d762' fill-opacity='0.02'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: var(--pattern-opacity);
+}
+
+.hero-women .hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.hero-women .hero-title {
+  font-size: var(--font-size-hero);
+  color: var(--color-text);
+  font-weight: 400;
+  margin-bottom: var(--spacing-md);
+}
+
+.hero-women .hero-title span {
+  color: var(--color-accent);
+  font-style: italic;
+}
+
+.hero-women .hero-subtitle {
+  font-family: var(--font-accent);
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Service Cards */
+.service-card-women {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.service-card-women:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(135, 215, 98, 0.15);
+}
+
+.service-card-women .service-image {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.service-card-women .service-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.service-card-women:hover .service-image img {
+  transform: scale(1.05);
+}
+
+.service-card-women .service-image::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, var(--color-bg-card), transparent);
+}
+
+.service-card-women .service-content {
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.service-card-women .service-title {
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  margin-bottom: var(--spacing-sm);
+}
+
+.service-card-women .service-price {
+  font-size: var(--font-size-2xl);
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* Staff Cards */
+.staff-card-women {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+}
+
+.staff-card-women .staff-avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 4px solid var(--color-accent);
+  margin: 0 auto var(--spacing-lg);
+  overflow: hidden;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+}
+
+.staff-card-women .staff-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.staff-card-women .staff-name {
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+}
+
+.staff-card-women .staff-title {
+  color: var(--color-accent);
+  font-family: var(--font-accent);
+  font-style: italic;
+}
+
+/* Decorative Elements */
+.rose-line {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  margin: var(--spacing-md) auto;
+}
+
+.rose-line-long {
+  width: 150px;
+}
+
+/* Floral Decoration */
+.floral-corner {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.floral-corner-tl {
+  top: 0;
+  left: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2387d762' d='M0 0c55.228 0 100 44.772 100 100H0V0z'/%3E%3C/svg%3E") no-repeat;
+}
+
+.floral-corner-br {
+  bottom: 0;
+  right: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2387d762' d='M100 100c-55.228 0-100-44.772-100-100h100v100z'/%3E%3C/svg%3E") no-repeat;
+}
+
+/* Mirror Frame Effect */
+.mirror-frame {
+  position: relative;
+  padding: var(--spacing-lg);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-xl);
+}
+
+.mirror-frame::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid var(--color-accent);
+  border-radius: calc(var(--radius-xl) - 4px);
+  opacity: 0.5;
+}
+
+/* Quote Block */
+.quote-block-women {
+  position: relative;
+  padding: var(--spacing-2xl);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.quote-block-women::before,
+.quote-block-women::after {
+  content: '"';
+  position: absolute;
+  font-family: var(--font-accent);
+  font-size: var(--font-size-6xl);
+  color: var(--color-accent);
+  opacity: 0.2;
+  line-height: 1;
+}
+
+.quote-block-women::before {
+  top: var(--spacing-md);
+  left: var(--spacing-lg);
+}
+
+.quote-block-women::after {
+  content: '"';
+  bottom: var(--spacing-md);
+  right: var(--spacing-lg);
+}
+
+.quote-block-women p {
+  font-family: var(--font-accent);
+  font-size: var(--font-size-xl);
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+/* Booking Form */
+.booking-form-women {
+  background: var(--color-bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+}
+
+.booking-form-women .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.booking-form-women label {
+  display: block;
+  font-family: var(--font-accent);
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.booking-form-women .form-input {
+  border-radius: var(--radius-lg);
+}
+
+/* Pricing Table */
+.pricing-table-women {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.pricing-table-women .pricing-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--card-border);
+  transition: background var(--transition-fast);
+}
+
+.pricing-table-women .pricing-row:last-child {
+  border-bottom: none;
+}
+
+.pricing-table-women .pricing-row:hover {
+  background: var(--color-bg-hover);
+}
+
+.pricing-table-women .pricing-service {
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+.pricing-table-women .pricing-amount {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* Elegant Divider */
+.elegant-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin: var(--spacing-2xl) 0;
+}
+
+.elegant-divider::before,
+.elegant-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+}
+
+.elegant-divider .divider-icon {
+  color: var(--color-accent);
+  font-size: var(--font-size-lg);
+}
+
+/* Membership Card */
+.membership-card-women {
+  background: linear-gradient(135deg, var(--color-bg-card), var(--color-bg-secondary));
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.membership-card-women::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(var(--color-accent-rgb), 0.1), transparent 70%);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+}
+
+.membership-card-women .plan-name {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+}
+
+.membership-card-women .plan-price {
+  font-size: var(--font-size-4xl);
+  color: var(--color-accent);
+  font-weight: 300;
+  position: relative;
+}
+
+.membership-card-women .plan-price span {
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}

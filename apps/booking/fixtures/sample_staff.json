@@ -1,0 +1,158 @@
+[
+    {
+        "model": "accounts.user",
+        "pk": 2,
+        "fields": {
+            "email": "marcus.johnson@traditionallifestyle.com",
+            "first_name": "Marcus",
+            "last_name": "Johnson",
+            "phone": "+1-555-0101",
+            "is_staff": false,
+            "is_active": true,
+            "preferred_brand": "men"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 3,
+        "fields": {
+            "email": "james.williams@traditionallifestyle.com",
+            "first_name": "James",
+            "last_name": "Williams",
+            "phone": "+1-555-0102",
+            "is_staff": false,
+            "is_active": true,
+            "preferred_brand": "men"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 4,
+        "fields": {
+            "email": "david.chen@traditionallifestyle.com",
+            "first_name": "David",
+            "last_name": "Chen",
+            "phone": "+1-555-0103",
+            "is_staff": false,
+            "is_active": true,
+            "preferred_brand": "men"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 5,
+        "fields": {
+            "email": "sophia.martinez@traditionallifestyle.com",
+            "first_name": "Sophia",
+            "last_name": "Martinez",
+            "phone": "+1-555-0201",
+            "is_staff": false,
+            "is_active": true,
+            "preferred_brand": "women"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 6,
+        "fields": {
+            "email": "emma.thompson@traditionallifestyle.com",
+            "first_name": "Emma",
+            "last_name": "Thompson",
+            "phone": "+1-555-0202",
+            "is_staff": false,
+            "is_active": true,
+            "preferred_brand": "women"
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 7,
+        "fields": {
+            "email": "olivia.davis@traditionallifestyle.com",
+            "first_name": "Olivia",
+            "last_name": "Davis",
+            "phone": "+1-555-0203",
+            "is_staff": false,
+            "is_active": true,
+            "preferred_brand": "women"
+        }
+    },
+    {
+        "model": "booking.staff",
+        "pk": 1,
+        "fields": {
+            "user": 2,
+            "brand": "men",
+            "title": "Master Barber",
+            "bio": "With over 15 years of experience, Marcus is our lead master barber specializing in classic cuts and hot towel shaves. His attention to detail and passion for the craft has earned him a loyal clientele.",
+            "years_experience": 15,
+            "is_active": true,
+            "specializations": [1, 2, 3, 4, 5, 6]
+        }
+    },
+    {
+        "model": "booking.staff",
+        "pk": 2,
+        "fields": {
+            "user": 3,
+            "brand": "men",
+            "title": "Senior Barber",
+            "bio": "James brings creativity and precision to every cut. Known for his modern fades and beard artistry, he stays current with the latest trends while respecting timeless techniques.",
+            "years_experience": 8,
+            "is_active": true,
+            "specializations": [1, 3, 4, 6]
+        }
+    },
+    {
+        "model": "booking.staff",
+        "pk": 3,
+        "fields": {
+            "user": 4,
+            "brand": "men",
+            "title": "Barber & Stylist",
+            "bio": "David combines Eastern and Western styling techniques for a unique approach. Expert in textured cuts and styling products, he helps clients achieve their perfect look.",
+            "years_experience": 5,
+            "is_active": true,
+            "specializations": [1, 2, 3, 4]
+        }
+    },
+    {
+        "model": "booking.staff",
+        "pk": 4,
+        "fields": {
+            "user": 5,
+            "brand": "women",
+            "title": "Creative Director",
+            "bio": "Sophia is our salon's creative director with 12 years of experience in high-end styling. She specializes in transformative color work and has trained at prestigious academies worldwide.",
+            "years_experience": 12,
+            "is_active": true,
+            "specializations": [7, 8, 9, 10, 11, 12]
+        }
+    },
+    {
+        "model": "booking.staff",
+        "pk": 5,
+        "fields": {
+            "user": 6,
+            "brand": "women",
+            "title": "Senior Colorist",
+            "bio": "Emma is a color specialist known for her stunning balayage and dimensional highlights. Her artistic eye and technical precision create beautiful, natural-looking results.",
+            "years_experience": 9,
+            "is_active": true,
+            "specializations": [7, 10, 11, 12]
+        }
+    },
+    {
+        "model": "booking.staff",
+        "pk": 6,
+        "fields": {
+            "user": 7,
+            "brand": "women",
+            "title": "Stylist",
+            "bio": "Olivia excels in special occasion styling and updos. Whether it's a wedding, gala, or everyday glam, she creates looks that make clients feel their absolute best.",
+            "years_experience": 6,
+            "is_active": true,
+            "specializations": [7, 8, 9]
+        }
+    }
+]

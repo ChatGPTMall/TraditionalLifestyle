@@ -1,0 +1,24 @@
+{{ brand_name }}
+================================
+
+APPOINTMENT CONFIRMED!
+
+Great news, {{ customer.first_name|default:"there" }}! Your appointment has been confirmed by our team.
+
+APPOINTMENT DETAILS
+-------------------
+Service: {{ service.name }}
+Date: {{ appointment.date|date:"l, F j, Y" }}
+Time: {{ appointment.start_time|time:"g:i A" }}
+Stylist: {{ staff.user.full_name }}
+
+We look forward to seeing you!
+
+-------------------
+{{ brand_name }}
+{% if brand == 'men' %}
+Al Falah Complex, Gulmarg Road, Magam
+Himalayas Region, Jammu & Kashmir
+{% else %}
+Pannu Complex, SCF-12, Utrathiya, Zirakpur, Punjab 140603
+{% endif %}

@@ -1,0 +1,31 @@
+{{ brand_name }}
+================================
+
+Hello {{ customer.first_name|default:"there" }},
+
+Thank you for booking with {{ brand_name }}! Your appointment has been successfully scheduled.
+
+APPOINTMENT DETAILS
+-------------------
+Service: {{ service.name }}
+Date: {{ appointment.date|date:"l, F j, Y" }}
+Time: {{ appointment.start_time|time:"g:i A" }}
+Duration: {{ service.duration_minutes }} minutes
+Stylist: {{ staff.user.full_name }}
+Price: ₹{{ appointment.total }}
+
+IMPORTANT NOTES
+---------------
+- Please arrive 10 minutes before your appointment time
+- If you need to reschedule or cancel, please do so at least 24 hours in advance
+
+-------------------
+{{ brand_name }}
+{% if brand == 'men' %}
+Al Falah Complex, Gulmarg Road, Magam
+Himalayas Region, Jammu & Kashmir
++1951295122 / +918899918595
+{% else %}
+Pannu Complex, SCF-12, Utrathiya, Zirakpur, Punjab 140603
+Contact the front desk for location-specific numbers
+{% endif %}

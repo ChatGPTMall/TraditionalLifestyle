@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Email | TraditionalLifestyle</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fffef9 0%, #fdfbf7 100%);
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(135, 215, 98, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .confirm-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .confirm-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #87d762;
+            margin-bottom: 2.5rem;
+        }
+
+        .confirm-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(135, 215, 98, 0.1) 0%, rgba(135, 215, 98, 0.05) 100%);
+            border: 2px solid rgba(135, 215, 98, 0.2);
+            border-radius: 50%;
+        }
+
+        .confirm-icon svg {
+            width: 45px;
+            height: 45px;
+            color: #87d762;
+        }
+
+        .confirm-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .confirm-message {
+            font-size: 0.95rem;
+            color: #666666;
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .confirm-email {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+        }
+
+        .confirm-form {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .btn-confirm {
+            display: inline-block;
+            width: 100%;
+            padding: 1rem 2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #87d762 0%, #c9848e 50%, #87d762 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .btn-confirm:hover {
+            background-position: 100% 0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(135, 215, 98, 0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #999999;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #87d762;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirm-container">
+        <div class="confirm-brand">TraditionalLifestyle</div>
+
+        <div class="confirm-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 12l2 2 4-4"/>
+                <circle cx="12" cy="12" r="10"/>
+            </svg>
+        </div>
+
+        <h1 class="confirm-title">Confirm Email</h1>
+        <p class="confirm-message">Please confirm that</p>
+        <p class="confirm-email">{{ email }}</p>
+        <p class="confirm-message">is your email address.</p>
+
+        <form class="confirm-form" method="post" action="{% url 'account_confirm_email' key %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-confirm">Confirm Email</button>
+        </form>
+
+        <a href="{% url 'core:landing' %}" class="back-link">Back to Home</a>
+    </div>
+
+    <script>
+        gsap.to('.confirm-form', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            delay: 0.3
+        });
+    </script>
+</body>
+</html>

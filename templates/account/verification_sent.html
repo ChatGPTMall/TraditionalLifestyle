@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email | TraditionalLifestyle</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fffef9 0%, #fdfbf7 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(135, 215, 98, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .verify-container {
+            width: 100%;
+            max-width: 480px;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .verify-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #87d762;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+        }
+
+        .verify-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(135, 215, 98, 0.1) 0%, rgba(135, 215, 98, 0.05) 100%);
+            border: 2px solid rgba(135, 215, 98, 0.2);
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .verify-icon svg {
+            width: 50px;
+            height: 50px;
+            color: #87d762;
+        }
+
+        .verify-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .verify-message {
+            font-size: 0.95rem;
+            color: #666666;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .verify-steps {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .verify-steps h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #87d762;
+            margin-bottom: 1rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .step-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(135, 215, 98, 0.1);
+            color: #87d762;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.9rem;
+            color: #666666;
+            line-height: 1.5;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #87d762 0%, #c9848e 50%, #87d762 100%);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .btn-home:hover {
+            background-position: 100% 0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(135, 215, 98, 0.3);
+        }
+
+        .resend-link {
+            display: block;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #999999;
+            opacity: 0;
+        }
+
+        .resend-link a {
+            color: #87d762;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .resend-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container">
+        <div class="verify-brand">TraditionalLifestyle</div>
+
+        <div class="verify-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+                <path d="M2 20l7-7"/>
+                <path d="M22 20l-7-7"/>
+            </svg>
+        </div>
+
+        <h1 class="verify-title">Verify Your Email</h1>
+        <p class="verify-message">
+            Thank you for signing up! We've sent a verification email to your inbox.
+            Please click the link in the email to activate your account.
+        </p>
+
+        <div class="verify-steps">
+            <h3>Next Steps</h3>
+            <div class="step-item">
+                <span class="step-number">1</span>
+                <span class="step-text">Check your email inbox for a message from TraditionalLifestyle</span>
+            </div>
+            <div class="step-item">
+                <span class="step-number">2</span>
+                <span class="step-text">Click the verification link in the email</span>
+            </div>
+            <div class="step-item">
+                <span class="step-number">3</span>
+                <span class="step-text">You'll be redirected to sign in and start booking</span>
+            </div>
+        </div>
+
+        <a href="{% url 'core:landing' %}" class="btn-home">Return to Home</a>
+
+        <p class="resend-link">
+            Didn't receive the email? Check your spam folder or <a href="{% url 'account_email' %}">resend verification</a>
+        </p>
+    </div>
+
+    <script>
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        tl.to('.verify-brand', { opacity: 1, duration: 0.6 })
+          .to('.verify-icon', { opacity: 1, scale: 1, duration: 0.6 }, '-=0.3')
+          .to('.verify-title', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+          .to('.verify-message', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+          .to('.verify-steps', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+          .to('.btn-home', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+          .to('.resend-link', { opacity: 1, duration: 0.5 }, '-=0.3');
+    </script>
+</body>
+</html>
