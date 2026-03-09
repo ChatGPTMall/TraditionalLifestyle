@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraditionalLifestyle | Premium Salon Experience</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Landing Container */
+        .landing-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Brand Panels */
+        .brand-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .brand-panel:hover {
+            flex: 1.15;
+        }
+
+        /* Men's Panel - Dark with Background Image */
+        .panel-men {
+            background: #0d0d0d;
+        }
+
+        /* Background image for men's panel */
+        .panel-men .panel-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+            transition: opacity 0.5s ease, transform 0.6s ease;
+        }
+
+        .panel-men:hover .panel-bg {
+            opacity: 0.5;
+            transform: scale(1.05);
+        }
+
+        /* Dark overlay for men's panel */
+        .panel-men::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.5) 50%,
+                rgba(0, 0, 0, 0.7) 100%
+            );
+            z-index: 1;
+        }
+
+        /* Gold accent glow on hover */
+        .panel-men::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 2;
+        }
+
+        .panel-men:hover::after {
+            opacity: 1;
+        }
+
+        /* Women's Panel - Light with Background Image */
+        .panel-women {
+            background: #fdfbf7;
+        }
+
+        /* Background image for women's panel */
+        .panel-women .panel-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.25;
+            transition: opacity 0.5s ease, transform 0.6s ease;
+        }
+
+        .panel-women:hover .panel-bg {
+            opacity: 0.35;
+            transform: scale(1.05);
+        }
+
+        /* Light overlay for women's panel */
+        .panel-women::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgb(0 0 0) 0%, rgb(96 72 23 / 70%) 50%, rgb(1 1 1) 100%);
+            z-index: 1;
+        }
+
+        /* Rose accent glow on hover */
+        .panel-women::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(135, 215, 98, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 2;
+        }
+
+        .panel-women:hover::after {
+            opacity: 1;
+        }
+
+        /* Panel Content */
+        .panel-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .panel-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .panel-men .panel-label {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .panel-women .panel-label {
+            color: #87d762;
+        }
+
+        .panel-title {
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            line-height: 1.1;
+        }
+
+        .panel-men .panel-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: #ffffff;
+            letter-spacing: 0.08em;
+            font-weight: 400;
+        }
+
+        .panel-women .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            color: #1a1a1a;
+            font-weight: 400;
+        }
+
+        .panel-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .panel-men .panel-subtitle {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .panel-women .panel-subtitle {
+            color: #666666;
+        }
+
+        .panel-cta {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            text-decoration: none;
+            border: 1px solid;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .panel-men .panel-cta {
+            color: #d4af37;
+            border-color: #d4af37;
+            background: transparent;
+        }
+
+        .panel-men .panel-cta:hover {
+            background: #d4af37;
+            color: #0d0d0d;
+        }
+
+        .panel-women .panel-cta {
+            color: #87d762;
+            border-color: #87d762;
+            background: transparent;
+        }
+
+        .panel-women .panel-cta:hover {
+            background: #87d762;
+            color: #ffffff;
+        }
+
+        /* Center Logo */
+        .center-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            text-align: center;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .center-logo .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            font-style: italic;
+            color: #888;
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+        }
+
+        /* Decorative circle on women's side */
+        .decorative-circle {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            width: 24px;
+            height: 24px;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .decorative-circle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+        }
+
+        /* Scissor Transition Overlay */
+        .scissor-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+
+        .scissor-svg {
+            width: 120px;
+            height: 120px;
+            opacity: 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .landing-container {
+                flex-direction: column;
+            }
+
+            .brand-panel:hover {
+                flex: 1.1;
+            }
+
+            .panel-men .panel-title {
+                font-size: 2.5rem;
+            }
+
+            .panel-women .panel-title {
+                font-size: 2.2rem;
+            }
+
+            .center-logo .logo-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scissor Transition Overlay -->
+    <div class="scissor-overlay">
+        <svg class="scissor-svg" viewBox="0 0 100 100">
+            <g class="scissor-group">
+                <path class="scissor-blade scissor-blade-top" d="M50 35 L85 20 L87 25 L52 42 Z" fill="#d4af37"/>
+                <path class="scissor-blade scissor-blade-bottom" d="M50 65 L85 80 L87 75 L52 58 Z" fill="#d4af37"/>
+                <circle cx="30" cy="35" r="10" fill="none" stroke="#d4af37" stroke-width="2"/>
+                <circle cx="30" cy="65" r="10" fill="none" stroke="#d4af37" stroke-width="2"/>
+                <circle cx="50" cy="50" r="3" fill="#d4af37"/>
+            </g>
+        </svg>
+    </div>
+
+    <!-- Main Landing -->
+    <div class="landing-container">
+        <!-- Men's Panel -->
+        <div class="brand-panel panel-men" data-brand="men">
+            <div class="panel-bg"></div>
+            <div class="panel-content">
+                <p class="panel-label">For Him</p>
+                <h2 class="panel-title">BROOKLYN<br>LUXURY<br>BARBERSHOP</h2>
+                <p class="panel-subtitle">Where style meets tradition.</p>
+                <a href="{% url 'core:set_brand' 'men' %}" class="panel-cta">Enter</a>
+            </div>
+        </div>
+
+        <!-- Center Logo -->
+        <div class="center-logo">
+            <span class="logo-text">TraditionalLifestyle</span>
+        </div>
+
+        <!-- Women's Panel -->
+        <div class="brand-panel panel-women" data-brand="women">
+            <div class="panel-bg"></div>
+            <div class="panel-content">
+                <p class="panel-label">For Her</p>
+                <h2 class="panel-title">Vintage<br>Salon</h2>
+                <p class="panel-subtitle">Premium salon experiences for women.</p>
+                <a href="{% url 'core:set_brand' 'women' %}" class="panel-cta">Enter</a>
+            </div>
+            <div class="decorative-circle"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initial Animations
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        // Fade in center logo
+        tl.to('.center-logo', { opacity: 1, duration: 1.2, delay: 0.3 });
+
+        // Animate panel content with stagger
+        tl.to('.panel-label', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 }, '-=0.8');
+        tl.to('.panel-title', { opacity: 1, y: 0, duration: 1, stagger: 0.15 }, '-=0.6');
+        tl.to('.panel-subtitle', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 }, '-=0.7');
+        tl.to('.panel-cta', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 }, '-=0.6');
+        tl.to('.decorative-circle', { opacity: 1, duration: 0.6 }, '-=0.4');
+
+        // Scissor Cut Transition
+        function scissorTransition(url) {
+            const scissorTl = gsap.timeline({
+                onComplete: () => {
+                    window.location.href = url;
+                }
+            });
+
+            scissorTl.to('.scissor-svg', { opacity: 1, duration: 0.2 });
+            scissorTl.to('.scissor-blade-top', { rotation: -20, transformOrigin: '50% 50%', duration: 0.15 }, '-=0.05');
+            scissorTl.to('.scissor-blade-bottom', { rotation: 20, transformOrigin: '50% 50%', duration: 0.15 }, '<');
+            scissorTl.to('.scissor-blade-top', { rotation: 0, duration: 0.1 });
+            scissorTl.to('.scissor-blade-bottom', { rotation: 0, duration: 0.1 }, '<');
+            scissorTl.to('.landing-container', {
+                clipPath: 'polygon(0 50%, 100% 50%, 100% 50%, 0 50%)',
+                duration: 0.4,
+                ease: 'power2.inOut'
+            }, '-=0.05');
+        }
+
+        // Panel CTA click handlers
+        document.querySelectorAll('.panel-cta').forEach(cta => {
+            cta.addEventListener('click', (e) => {
+                e.preventDefault();
+                scissorTransition(e.target.href);
+            });
+        });
+
+        // Hover effect on panels
+        document.querySelectorAll('.brand-panel').forEach(panel => {
+            panel.addEventListener('click', (e) => {
+                if (e.target.classList.contains('panel-cta')) return;
+                const cta = panel.querySelector('.panel-cta');
+                if (cta) {
+                    e.preventDefault();
+                    scissorTransition(cta.href);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

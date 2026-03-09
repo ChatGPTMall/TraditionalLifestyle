@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Membership{% endblock %}
+
+{% block extra_css %}
+<style>
+    .membership-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: var(--spacing-3xl) var(--spacing-xl);
+    }
+
+    .page-header {
+        margin-bottom: var(--spacing-2xl);
+    }
+
+    .page-header h1 {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .membership-grid {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: var(--spacing-2xl);
+    }
+
+    @media (max-width: 768px) {
+        .membership-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .membership-card {
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-2xl);
+    }
+
+    .membership-card h3 {
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .status-active {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+    }
+
+    .status-cancelled {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+    }
+
+    .status-expired {
+        background: rgba(156, 163, 175, 0.15);
+        color: #9ca3af;
+    }
+
+    .membership-info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-md) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .membership-info-row:last-child {
+        border-bottom: none;
+    }
+
+    .membership-info-label {
+        color: var(--color-text-muted);
+    }
+
+    .membership-info-value {
+        font-weight: 500;
+    }
+
+    .progress-bar-container {
+        margin-top: var(--spacing-lg);
+    }
+
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: var(--spacing-sm);
+        font-size: var(--font-size-sm);
+    }
+
+    .progress-bar {
+        height: 8px;
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-full);
+        overflow: hidden;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: var(--color-accent);
+        border-radius: var(--radius-full);
+        transition: width var(--transition-normal);
+    }
+
+    .membership-actions {
+        margin-top: var(--spacing-xl);
+        display: flex;
+        gap: var(--spacing-md);
+    }
+
+    .wallet-summary {
+        background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark, #b8932e) 100%);
+        color: var(--btn-primary-text, #000);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-xl);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .wallet-balance {
+        font-size: var(--font-size-3xl);
+        font-weight: 700;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .wallet-label {
+        opacity: 0.8;
+        font-size: var(--font-size-sm);
+    }
+
+    .wallet-credits {
+        margin-top: var(--spacing-md);
+        padding-top: var(--spacing-md);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .credits-count {
+        font-size: var(--font-size-xl);
+        font-weight: 700;
+    }
+
+    .no-membership {
+        text-align: center;
+        padding: var(--spacing-3xl);
+    }
+
+    .no-membership svg {
+        width: 64px;
+        height: 64px;
+        color: var(--color-text-muted);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .no-membership h3 {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .no-membership p {
+        color: var(--color-text-muted);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .quick-links {
+        margin-top: var(--spacing-lg);
+    }
+
+    .quick-link {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-sm);
+        transition: all var(--transition-fast);
+        text-decoration: none;
+        color: var(--color-text);
+    }
+
+    .quick-link:hover {
+        background: var(--color-bg);
+        transform: translateX(4px);
+    }
+
+    .quick-link svg {
+        width: 20px;
+        height: 20px;
+        color: var(--color-accent);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="membership-container">
+    <div class="page-header">
+        <h1>My Membership</h1>
+        <p class="text-muted">Manage your membership and wallet</p>
+    </div>
+
+    {% if membership %}
+    <div class="membership-grid">
+        <!-- Main Content -->
+        <div>
+            <!-- Membership Status Card -->
+            <div class="membership-card">
+                <h3>
+                    {{ membership.plan.name }}
+                    <span class="status-active {% if membership.status == 'cancelled' %}status-cancelled{% elif membership.status == 'expired' %}status-expired{% endif %}">
+                        {{ membership.get_status_display }}
+                    </span>
+                </h3>
+
+                <div class="membership-info-row">
+                    <span class="membership-info-label">Plan Type</span>
+                    <span class="membership-info-value">{{ membership.plan.get_plan_type_display }}</span>
+                </div>
+
+                <div class="membership-info-row">
+                    <span class="membership-info-label">Start Date</span>
+                    <span class="membership-info-value">{{ membership.start_date|date:"M d, Y" }}</span>
+                </div>
+
+                <div class="membership-info-row">
+                    <span class="membership-info-label">{% if membership.auto_renew %}Renews{% else %}Expires{% endif %}</span>
+                    <span class="membership-info-value">{{ membership.end_date|date:"M d, Y" }}</span>
+                </div>
+
+                {% if membership.plan.discount_percentage > 0 %}
+                <div class="membership-info-row">
+                    <span class="membership-info-label">Shop Discount</span>
+                    <span class="membership-info-value">{{ membership.plan.discount_percentage }}% off</span>
+                </div>
+                {% endif %}
+
+                {% if membership.plan.priority_booking %}
+                <div class="membership-info-row">
+                    <span class="membership-info-label">Priority Booking</span>
+                    <span class="membership-info-value">Enabled</span>
+                </div>
+                {% endif %}
+
+                <!-- Days Remaining Progress -->
+                {% if membership.is_active %}
+                <div class="progress-bar-container">
+                    <div class="progress-label">
+                        <span>Time Remaining</span>
+                        <span>{{ membership.days_remaining }} days</span>
+                    </div>
+                    {% with total_days=30 %}
+                    {% if membership.plan.plan_type == 'yearly' %}
+                    {% with total_days=365 %}
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: {% widthratio membership.days_remaining total_days 100 %}%"></div>
+                    </div>
+                    {% endwith %}
+                    {% else %}
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: {% widthratio membership.days_remaining total_days 100 %}%"></div>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                {% endif %}
+
+                <div class="membership-actions">
+                    {% if membership.status == 'active' and membership.auto_renew %}
+                    <form method="post" action="{% url 'membership:cancel' %}" onsubmit="return confirm('Are you sure you want to cancel your membership?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Cancel Membership</button>
+                    </form>
+                    {% elif membership.status == 'cancelled' or not membership.auto_renew %}
+                    <form method="post" action="{% url 'membership:reactivate' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Reactivate Membership</button>
+                    </form>
+                    {% endif %}
+
+                    <a href="{% url 'membership:plans' %}" class="btn btn-secondary">View All Plans</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+            <!-- Wallet Summary -->
+            <div class="membership-card">
+                <div class="wallet-summary">
+                    <p class="wallet-label">Wallet Balance</p>
+                    <p class="wallet-balance">₹{{ wallet.balance|floatformat:2 }}</p>
+
+                    {% if wallet.credits > 0 %}
+                    <div class="wallet-credits">
+                        <span class="credits-count">{{ wallet.credits }}</span>
+                        <span>credits available</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <a href="{% url 'membership:wallet' %}" class="btn btn-primary" style="width: 100%;">
+                    Manage Wallet
+                </a>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="membership-card">
+                <h3>Quick Links</h3>
+                <div class="quick-links">
+                    <a href="{% url 'booking:create' %}" class="quick-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        <span>Book an Appointment</span>
+                    </a>
+                    <a href="{% url 'booking:appointments' %}" class="quick-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                        <span>My Appointments</span>
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="quick-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <span>Edit Profile</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- No Membership State -->
+    <div class="membership-card no-membership">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3>No Active Membership</h3>
+        <p>Join our membership program to enjoy exclusive benefits, monthly credits, and special discounts.</p>
+        <a href="{% url 'membership:plans' %}" class="btn btn-primary btn-lg">View Membership Plans</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

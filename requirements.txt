@@ -1,0 +1,37 @@
+# Django Core
+Django>=4.2,<5.0
+djangorestframework>=3.14
+django-cors-headers>=4.0
+
+# Environment & Configuration
+python-decouple>=3.8
+
+# Database & Caching
+redis>=5.0
+django-redis>=5.4
+
+# Task Queue
+celery>=5.3
+
+# Authentication
+django-allauth>=0.60
+
+# Image Processing
+Pillow>=10.0
+django-imagekit>=5.0
+
+# Payments
+stripe>=7.0
+
+# WhatsApp/SMS
+twilio>=8.0
+
+# Forms & Utilities
+django-crispy-forms>=2.1
+crispy-tailwind>=1.0
+
+# Admin Enhancements
+django-htmx>=1.17
+
+# Development
+whitenoise>=6.6

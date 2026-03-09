@@ -1,0 +1,270 @@
+/*
+ * Brooklyn Luxury Barbershop - Men's Theme Specific Styles
+ */
+
+/* Hero Section */
+.hero-men {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  overflow: hidden;
+}
+
+.hero-men::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: var(--pattern-opacity);
+}
+
+.hero-men .hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.hero-men .hero-title {
+  font-size: var(--font-size-hero);
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-md);
+}
+
+.hero-men .hero-title span {
+  color: var(--color-accent);
+}
+
+.hero-men .hero-subtitle {
+  font-family: var(--font-accent);
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Service Cards */
+.service-card-men {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.service-card-men:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-8px);
+}
+
+.service-card-men .service-image {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.service-card-men .service-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.service-card-men:hover .service-image img {
+  transform: scale(1.1);
+}
+
+.service-card-men .service-image::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, var(--color-bg-card), transparent);
+}
+
+.service-card-men .service-content {
+  padding: var(--spacing-lg);
+}
+
+.service-card-men .service-title {
+  font-size: var(--font-size-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-sm);
+}
+
+.service-card-men .service-price {
+  font-size: var(--font-size-2xl);
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* Staff Cards */
+.staff-card-men {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+}
+
+.staff-card-men .staff-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid var(--color-accent);
+  margin: 0 auto var(--spacing-lg);
+  overflow: hidden;
+}
+
+.staff-card-men .staff-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.staff-card-men .staff-name {
+  font-size: var(--font-size-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.staff-card-men .staff-title {
+  color: var(--color-accent);
+  font-style: italic;
+}
+
+/* Decorative Elements */
+.gold-line {
+  width: 60px;
+  height: 2px;
+  background: var(--color-accent);
+  margin: var(--spacing-md) auto;
+}
+
+.gold-line-long {
+  width: 120px;
+}
+
+/* Scissors Icon Animation */
+.scissors-icon {
+  display: inline-block;
+  color: var(--color-accent);
+  animation: scissorsSnip 2s infinite;
+}
+
+@keyframes scissorsSnip {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+/* Barber Pole Effect */
+.barber-pole {
+  width: 20px;
+  height: 100px;
+  background: repeating-linear-gradient(
+    45deg,
+    #fff,
+    #fff 10px,
+    #c41e3a 10px,
+    #c41e3a 20px,
+    #fff 20px,
+    #fff 30px,
+    #1e3a8a 30px,
+    #1e3a8a 40px
+  );
+  border-radius: var(--radius-full);
+  animation: barberpole 2s linear infinite;
+}
+
+@keyframes barberpole {
+  from { background-position: 0 0; }
+  to { background-position: 0 40px; }
+}
+
+/* Quote Block */
+.quote-block-men {
+  position: relative;
+  padding: var(--spacing-2xl);
+  background: var(--color-bg-secondary);
+  border-left: 4px solid var(--color-accent);
+}
+
+.quote-block-men::before {
+  content: '"';
+  position: absolute;
+  top: var(--spacing-md);
+  left: var(--spacing-lg);
+  font-family: var(--font-accent);
+  font-size: var(--font-size-6xl);
+  color: var(--color-accent);
+  opacity: 0.3;
+  line-height: 1;
+}
+
+.quote-block-men p {
+  font-family: var(--font-accent);
+  font-size: var(--font-size-xl);
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+/* Booking Form */
+.booking-form-men {
+  background: var(--color-bg-card);
+  border: 1px solid var(--card-border);
+  padding: var(--spacing-2xl);
+}
+
+.booking-form-men .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.booking-form-men label {
+  display: block;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Pricing Table */
+.pricing-table-men {
+  border: 1px solid var(--card-border);
+}
+
+.pricing-table-men .pricing-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--card-border);
+  transition: background var(--transition-fast);
+}
+
+.pricing-table-men .pricing-row:last-child {
+  border-bottom: none;
+}
+
+.pricing-table-men .pricing-row:hover {
+  background: var(--color-bg-hover);
+}
+
+.pricing-table-men .pricing-service {
+  font-weight: 500;
+}
+
+.pricing-table-men .pricing-amount {
+  color: var(--color-accent);
+  font-weight: 700;
+}

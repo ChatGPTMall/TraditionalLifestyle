@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Membership Plans{% endblock %}
+
+{% block extra_css %}
+<style>
+    .membership-hero {
+        padding: var(--spacing-3xl) var(--spacing-xl);
+        text-align: center;
+        background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-secondary) 100%);
+    }
+
+    .membership-hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .membership-hero .subtitle {
+        font-size: var(--font-size-lg);
+        color: var(--color-text-muted);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .plans-container {
+        padding: var(--spacing-3xl) var(--spacing-xl);
+    }
+
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: var(--spacing-xl);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .plan-card {
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-2xl);
+        position: relative;
+        transition: all var(--transition-normal);
+    }
+
+    .plan-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .plan-card.featured {
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 1px var(--color-accent);
+    }
+
+    .plan-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--color-accent);
+        color: var(--btn-primary-text, #000);
+        padding: var(--spacing-xs) var(--spacing-lg);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-xs);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .plan-header {
+        text-align: center;
+        padding-bottom: var(--spacing-xl);
+        border-bottom: 1px solid var(--color-border);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .plan-name {
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .plan-type {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .plan-price {
+        margin-top: var(--spacing-lg);
+    }
+
+    .plan-price .amount {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--color-accent);
+        line-height: 1;
+    }
+
+    .plan-price .period {
+        font-size: var(--font-size-md);
+        color: var(--color-text-muted);
+    }
+
+    .plan-price .monthly-equiv {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+        margin-top: var(--spacing-xs);
+    }
+
+    .plan-features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 var(--spacing-xl) 0;
+    }
+
+    .plan-features li {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) 0;
+    }
+
+    .plan-features .check-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        color: var(--color-accent);
+    }
+
+    .plan-features .feature-text {
+        font-size: var(--font-size-md);
+    }
+
+    .plan-highlights {
+        background: var(--color-bg-secondary);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .plan-highlights .highlight {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-xs) 0;
+        font-size: var(--font-size-sm);
+    }
+
+    .plan-highlights .highlight-label {
+        color: var(--color-text-muted);
+    }
+
+    .plan-highlights .highlight-value {
+        font-weight: 600;
+        color: var(--color-accent);
+    }
+
+    .plan-cta {
+        text-align: center;
+    }
+
+    .plan-cta .btn {
+        width: 100%;
+    }
+
+    .current-plan-badge {
+        background: var(--color-success, #22c55e);
+        color: white;
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: var(--radius-md);
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+        display: inline-block;
+        margin-top: var(--spacing-md);
+    }
+
+    .benefits-section {
+        background: var(--color-bg-secondary);
+        padding: var(--spacing-3xl) var(--spacing-xl);
+    }
+
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--spacing-xl);
+        max-width: 1000px;
+        margin: var(--spacing-2xl) auto 0;
+    }
+
+    .benefit-item {
+        text-align: center;
+        padding: var(--spacing-lg);
+    }
+
+    .benefit-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto var(--spacing-md);
+        color: var(--color-accent);
+    }
+
+    .benefit-title {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .benefit-desc {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-md);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="membership-hero">
+    <h1>Membership Plans</h1>
+    <p class="subtitle">
+        Join our exclusive membership for premium benefits, monthly credits, and special discounts on all services.
+    </p>
+</section>
+
+<!-- Plans Grid -->
+<section class="plans-container">
+    {% if plans %}
+    <div class="plans-grid">
+        {% for plan in plans %}
+        <div class="plan-card {% if plan.is_featured %}featured{% endif %}">
+            {% if plan.is_featured %}
+            <span class="plan-badge">Most Popular</span>
+            {% endif %}
+
+            <div class="plan-header">
+                <h3 class="plan-name">{{ plan.name }}</h3>
+                <p class="plan-type">{{ plan.get_plan_type_display }}</p>
+
+                <div class="plan-price">
+                    <span class="amount">₹{{ plan.price|floatformat:0 }}</span>
+                    <span class="period">/{{ plan.get_plan_type_display|lower }}</span>
+                    {% if plan.plan_type == 'yearly' %}
+                    <p class="monthly-equiv">That's just ₹{{ plan.monthly_price|floatformat:2 }}/month</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="plan-highlights">
+                {% if plan.credits > 0 %}
+                <div class="highlight">
+                    <span class="highlight-label">Monthly Credits</span>
+                    <span class="highlight-value">{{ plan.credits }}</span>
+                </div>
+                {% endif %}
+                {% if plan.discount_percentage > 0 %}
+                <div class="highlight">
+                    <span class="highlight-label">Shop Discount</span>
+                    <span class="highlight-value">{{ plan.discount_percentage }}% off</span>
+                </div>
+                {% endif %}
+                {% if plan.priority_booking %}
+                <div class="highlight">
+                    <span class="highlight-label">Priority Booking</span>
+                    <span class="highlight-value">Yes</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <ul class="plan-features">
+                {% for feature in plan.features %}
+                <li>
+                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    <span class="feature-text">{{ feature }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="plan-cta">
+                {% if current_membership and current_membership.plan.id == plan.id %}
+                <span class="current-plan-badge">Current Plan</span>
+                {% elif user.is_authenticated %}
+                <a href="{% url 'membership:subscribe' plan.pk %}" class="btn {% if plan.is_featured %}btn-primary{% else %}btn-secondary{% endif %} btn-lg">
+                    {% if current_membership %}Upgrade{% else %}Get Started{% endif %}
+                </a>
+                {% else %}
+                <a href="{% url 'account_login' %}?next={% url 'membership:subscribe' plan.pk %}" class="btn {% if plan.is_featured %}btn-primary{% else %}btn-secondary{% endif %} btn-lg">
+                    Sign In to Subscribe
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center" style="padding: var(--spacing-3xl);">
+        <p class="text-muted">No membership plans available at this time.</p>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Benefits Section -->
+<section class="benefits-section">
+    <div class="container">
+        <h2 class="text-center">Why Become a Member?</h2>
+
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <h4 class="benefit-title">Save Money</h4>
+                <p class="benefit-desc">Monthly credits and discounts mean significant savings on every visit.</p>
+            </div>
+
+            <div class="benefit-item">
+                <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <h4 class="benefit-title">Priority Booking</h4>
+                <p class="benefit-desc">Get first access to appointments and never miss your preferred time slots.</p>
+            </div>
+
+            <div class="benefit-item">
+                <svg class="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                </svg>
+                <h4 class="benefit-title">Exclusive Perks</h4>
+                <p class="benefit-desc">Members-only events, product samples, and special promotions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

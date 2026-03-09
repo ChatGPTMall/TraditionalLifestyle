@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Our Services{% endblock %}
+
+{% block content %}
+<section class="page-header" style="padding: var(--spacing-3xl) 0; background: var(--color-bg-secondary); text-align: center;">
+    <div class="container">
+        <p class="section-subtitle slide-up">What We Offer</p>
+        <h1 class="slide-up delay-1">Our Services</h1>
+        <p class="text-muted slide-up delay-2" style="max-width: 600px; margin: 0 auto;">
+            Experience premium grooming services tailored to your unique style.
+        </p>
+    </div>
+</section>
+
+<!-- Category Filter -->
+{% if categories %}
+<section style="padding: var(--spacing-xl) 0; border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+        <div class="flex gap-2 justify-center" style="flex-wrap: wrap;">
+            <a href="{% url 'booking:services' %}"
+               class="category-filter {% if not request.GET.category %}active{% endif %}">
+                All Services
+            </a>
+            {% for category in categories %}
+            <a href="?category={{ category.slug }}"
+               class="category-filter {% if request.GET.category == category.slug %}active{% endif %}">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Services Grid -->
+<section class="section">
+    <div class="container">
+        {% if featured_services and not request.GET.category %}
+        <!-- Featured Services -->
+        <div style="margin-bottom: var(--spacing-3xl);">
+            <h2 class="text-center" style="margin-bottom: var(--spacing-xl);">Featured Services</h2>
+            <div class="grid grid-cols-3 gap-3">
+                {% for service in featured_services %}
+                <div class="service-card card fade-in delay-{{ forloop.counter }}">
+                    {% if service.image %}
+                    <div class="service-image" style="height: 200px; overflow: hidden;">
+                        <img src="{{ service.image.url }}" alt="{{ service.name }}"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    {% else %}
+                    <div class="service-image" style="height: 200px; background: var(--color-bg-secondary); display: flex; align-items: center; justify-content: center;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5">
+                            <path d="M14.5 4h-5L7 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-3l-2.5-3z"/>
+                            <circle cx="12" cy="13" r="3"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <span class="text-accent" style="font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.1em;">
+                            {{ service.category.name|default:"Service" }}
+                        </span>
+                        <h3 style="font-size: var(--font-size-xl); margin: var(--spacing-sm) 0;">{{ service.name }}</h3>
+                        <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-md);">
+                            {{ service.description|truncatewords:20 }}
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-accent" style="font-size: var(--font-size-xl); font-weight: 600;">
+                                    ₹{{ service.current_price }}
+                                </span>
+                                <span class="text-muted" style="font-size: var(--font-size-sm);">
+                                    / {{ service.duration_minutes }} min
+                                </span>
+                            </div>
+                            <a href="{% url 'booking:create' %}?service={{ service.pk }}" class="btn btn-primary" style="font-size: var(--font-size-xs);">
+                                Book Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- All Services -->
+        <h2 class="text-center" style="margin-bottom: var(--spacing-xl);">
+            {% if request.GET.category %}{{ categories.0.name }} Services{% else %}All Services{% endif %}
+        </h2>
+
+        {% if services %}
+        <div class="grid grid-cols-3 gap-3">
+            {% for service in services %}
+            <div class="service-card card fade-in" style="animation-delay: {{ forloop.counter0|divisibleby:3 }}00ms;">
+                {% if service.image %}
+                <div class="service-image" style="height: 180px; overflow: hidden;">
+                    <img src="{{ service.image.url }}" alt="{{ service.name }}"
+                         style="width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-slow);">
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <span class="text-accent" style="font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.1em;">
+                        {{ service.category.name|default:"Service" }}
+                    </span>
+                    <h3 style="font-size: var(--font-size-lg); margin: var(--spacing-sm) 0;">{{ service.name }}</h3>
+                    <p class="text-muted" style="font-size: var(--font-size-sm); margin-bottom: var(--spacing-md);">
+                        {{ service.description|truncatewords:15 }}
+                    </p>
+                    <div class="flex justify-between items-center" style="padding-top: var(--spacing-md); border-top: 1px solid var(--color-border);">
+                        <div>
+                            {% if service.sale_price %}
+                            <span class="text-muted" style="text-decoration: line-through; font-size: var(--font-size-sm);">
+                                ₹{{ service.price }}
+                            </span>
+                            {% endif %}
+                            <span class="text-accent" style="font-size: var(--font-size-lg); font-weight: 600;">
+                                ₹{{ service.current_price }}
+                            </span>
+                            <span class="text-muted" style="font-size: var(--font-size-xs);">
+                                {{ service.duration_minutes }}min
+                            </span>
+                        </div>
+                        <a href="{% url 'booking:create' %}?service={{ service.pk }}" class="btn btn-secondary" style="font-size: var(--font-size-xs); padding: var(--spacing-xs) var(--spacing-md);">
+                            Book
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center" style="padding: var(--spacing-3xl);">
+            <p class="text-muted">No services available in this category.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section style="padding: var(--spacing-3xl) 0; background: var(--color-bg-secondary); text-align: center;">
+    <div class="container">
+        <h2>Ready to Transform Your Look?</h2>
+        <p class="text-muted" style="margin-bottom: var(--spacing-xl);">Book your appointment today and experience the difference.</p>
+        <a href="{% url 'booking:create' %}" class="btn btn-primary btn-lg">Book Appointment</a>
+    </div>
+</section>
+
+<style>
+    .category-filter {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        font-size: var(--font-size-sm);
+        color: var(--color-text-secondary);
+        transition: all var(--transition-fast);
+    }
+    .category-filter:hover,
+    .category-filter.active {
+        background: var(--color-accent);
+        border-color: var(--color-accent);
+        color: var(--btn-primary-text);
+    }
+    .service-card:hover .service-image img {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}

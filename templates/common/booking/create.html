@@ -1,0 +1,699 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Book Appointment{% endblock %}
+
+{% block extra_css %}
+<style>
+    .booking-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+
+    /* Progress Steps */
+    .booking-progress {
+        display: flex;
+        justify-content: center;
+        margin-bottom: var(--spacing-2xl);
+    }
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        flex: 1;
+        max-width: 150px;
+    }
+    .progress-step::after {
+        content: '';
+        position: absolute;
+        top: 18px;
+        left: 60%;
+        width: 80%;
+        height: 2px;
+        background: var(--color-border);
+        transition: background 0.3s ease;
+    }
+    .progress-step:last-child::after {
+        display: none;
+    }
+    .progress-step.active::after,
+    .progress-step.completed::after {
+        background: var(--color-accent);
+    }
+    .step-number {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--color-bg-secondary);
+        border: 2px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: var(--font-size-sm);
+        position: relative;
+        z-index: 1;
+        transition: all var(--transition-fast);
+    }
+    .progress-step.active .step-number,
+    .progress-step.completed .step-number {
+        background: var(--color-accent);
+        border-color: var(--color-accent);
+        color: var(--btn-primary-text);
+    }
+    .progress-step.completed .step-number::before {
+        content: '✓';
+    }
+    .progress-step.completed .step-number span {
+        display: none;
+    }
+    .step-label {
+        margin-top: var(--spacing-sm);
+        font-size: var(--font-size-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-text-muted);
+        transition: color 0.3s ease;
+    }
+    .progress-step.active .step-label {
+        color: var(--color-accent);
+    }
+
+    /* Booking Steps */
+    .booking-step {
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+    .booking-step.active {
+        display: block;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Selection Cards */
+    .selection-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--spacing-md);
+    }
+    .service-card,
+    .staff-card {
+        padding: var(--spacing-lg);
+        border: 2px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        background: var(--color-bg-card);
+    }
+    .service-card:hover,
+    .staff-card:hover {
+        border-color: var(--color-accent);
+        background: var(--color-bg-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .service-card.selected,
+    .staff-card.selected {
+        border-color: var(--color-accent);
+        background: rgba(var(--color-accent-rgb), 0.05);
+        box-shadow: 0 0 0 4px rgba(var(--color-accent-rgb), 0.15);
+    }
+
+    /* Any Stylist Option */
+    .any-staff-option {
+        padding: var(--spacing-lg);
+        border: 2px dashed var(--color-border);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        text-align: center;
+        transition: all var(--transition-fast);
+    }
+    .any-staff-option:hover {
+        border-color: var(--color-accent);
+        background: var(--color-bg-hover);
+    }
+    .any-staff-option.selected {
+        border-color: var(--color-accent);
+        border-style: solid;
+        background: rgba(var(--color-accent-rgb), 0.05);
+    }
+
+    /* Calendar Styles */
+    .calendar-wrapper {
+        background: var(--color-bg-card);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        border: 1px solid var(--color-border);
+    }
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-lg);
+    }
+    .calendar-nav {
+        background: none;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        cursor: pointer;
+        color: var(--color-text);
+        transition: all var(--transition-fast);
+    }
+    .calendar-nav:hover {
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+    }
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+    }
+    .calendar-header-day {
+        text-align: center;
+        font-size: var(--font-size-xs);
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+        padding: var(--spacing-sm);
+        font-weight: 600;
+    }
+    .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-sm);
+        transition: all var(--transition-fast);
+    }
+    .calendar-day.available {
+        cursor: pointer;
+        background: var(--color-bg-secondary);
+    }
+    .calendar-day.available:hover {
+        background: rgba(var(--color-accent-rgb), 0.2);
+        color: var(--color-accent);
+    }
+    .calendar-day.selected {
+        background: var(--color-accent);
+        color: var(--btn-primary-text);
+    }
+    .calendar-day.past,
+    .calendar-day.unavailable {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+    .calendar-day.empty {
+        visibility: hidden;
+    }
+
+    /* Time Slots */
+    .time-slots-wrapper {
+        background: var(--color-bg-card);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-lg);
+        border: 1px solid var(--color-border);
+        min-height: 300px;
+    }
+    .selected-date-display {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        margin-bottom: var(--spacing-lg);
+        color: var(--color-accent);
+    }
+    .slot-group {
+        margin-bottom: var(--spacing-xl);
+    }
+    .slot-group-label {
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+        color: var(--color-text-muted);
+        margin-bottom: var(--spacing-md);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .slot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: var(--spacing-sm);
+    }
+    .time-slot {
+        padding: var(--spacing-md);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-bg-card, #ffffff);
+        color: var(--color-text, #333333);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        text-align: center;
+        font-weight: 500;
+        font-size: var(--font-size-sm);
+    }
+    .time-slot:hover:not(:disabled) {
+        border-color: var(--color-accent);
+        background: rgba(var(--color-accent-rgb), 0.1);
+        color: var(--color-text);
+    }
+    .time-slot.selected {
+        border-color: var(--color-accent);
+        background: var(--color-accent);
+        color: var(--btn-primary-text, #ffffff);
+    }
+    .time-slot:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    .time-slot .slot-staff {
+        display: block;
+        font-size: var(--font-size-xs);
+        color: var(--color-text-muted);
+        margin-top: var(--spacing-xs);
+    }
+    .time-slot.selected .slot-staff {
+        color: inherit;
+        opacity: 0.8;
+    }
+
+    /* Fix for dark theme time slots */
+    [data-theme="men"] .time-slot {
+        background: #1a1a1a;
+        color: #ffffff;
+        border-color: #333333;
+    }
+    [data-theme="men"] .time-slot:hover:not(:disabled) {
+        background: rgba(212, 175, 55, 0.2);
+        color: #ffffff;
+    }
+    [data-theme="men"] .time-slot.selected {
+        background: var(--color-accent);
+        color: #000000;
+    }
+
+    /* Summary Card */
+    .summary-card {
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-xl);
+    }
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-md) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+    .summary-row:last-child {
+        border-bottom: none;
+    }
+    .summary-label {
+        color: var(--color-text-muted);
+    }
+    .summary-value {
+        font-weight: 500;
+    }
+    .summary-total {
+        font-size: var(--font-size-xl);
+        color: var(--color-accent);
+    }
+
+    /* Hold Timer */
+    .hold-timer-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md);
+        background: rgba(var(--color-accent-rgb), 0.1);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-xl);
+    }
+    .hold-timer-wrapper svg {
+        color: var(--color-accent);
+    }
+    #hold-timer {
+        font-weight: 700;
+        font-size: var(--font-size-lg);
+        color: var(--color-accent);
+    }
+    #hold-timer.warning {
+        color: var(--color-error);
+        animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    /* Navigation Buttons */
+    .booking-nav {
+        display: flex;
+        justify-content: space-between;
+        margin-top: var(--spacing-2xl);
+        padding-top: var(--spacing-xl);
+        border-top: 1px solid var(--color-border);
+    }
+
+    /* Loading State */
+    .loading-spinner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-3xl);
+        color: var(--color-text-muted);
+    }
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--color-border);
+        border-top-color: var(--color-accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: var(--spacing-md);
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* No Slots Message */
+    .no-slots-message {
+        text-align: center;
+        padding: var(--spacing-3xl);
+        color: var(--color-text-muted);
+    }
+    .no-slots-message svg {
+        margin-bottom: var(--spacing-md);
+        opacity: 0.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .selection-grid {
+            grid-template-columns: 1fr;
+        }
+        .booking-progress {
+            overflow-x: auto;
+            padding-bottom: var(--spacing-sm);
+        }
+        .progress-step {
+            min-width: 80px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-header" style="padding: var(--spacing-2xl) 0; background: var(--color-bg-secondary); text-align: center;">
+    <div class="container">
+        <h1>Book Your Appointment</h1>
+        <p class="text-muted">Select your service, stylist, and preferred time</p>
+    </div>
+</section>
+
+<div class="booking-container booking-form-container">
+    <!-- Progress Steps -->
+    <div class="booking-progress">
+        <div class="progress-step step-indicator active" data-step="1">
+            <div class="step-number"><span>1</span></div>
+            <span class="step-label">Service</span>
+        </div>
+        <div class="progress-step step-indicator" data-step="2">
+            <div class="step-number"><span>2</span></div>
+            <span class="step-label">Stylist</span>
+        </div>
+        <div class="progress-step step-indicator" data-step="3">
+            <div class="step-number"><span>3</span></div>
+            <span class="step-label">Date & Time</span>
+        </div>
+        <div class="progress-step step-indicator" data-step="4">
+            <div class="step-number"><span>4</span></div>
+            <span class="step-label">Confirm</span>
+        </div>
+    </div>
+
+    <form method="post" id="booking-form">
+        {% csrf_token %}
+        <input type="hidden" name="service" id="service-input">
+        <input type="hidden" name="staff" id="staff-input">
+        <input type="hidden" name="slot" id="slot-input">
+        <input type="hidden" name="date" id="date-input">
+        <input type="hidden" name="time" id="time-input">
+
+        <!-- Step 1: Select Service -->
+        <div class="booking-step active" data-step="1">
+            <h2 class="text-center" style="margin-bottom: var(--spacing-xl);">Select a Service</h2>
+            <div class="selection-grid">
+                {% for service in services %}
+                <div class="service-card"
+                     data-service-id="{{ service.pk }}"
+                     data-service-name="{{ service.name }}"
+                     data-service-duration="{{ service.duration_minutes }}"
+                     data-service-price="{{ service.current_price }}">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 style="margin-bottom: var(--spacing-xs);">{{ service.name }}</h4>
+                            <p class="text-muted" style="font-size: var(--font-size-sm);">{{ service.duration_minutes }} min</p>
+                            {% if service.description %}
+                            <p class="text-muted" style="font-size: var(--font-size-xs); margin-top: var(--spacing-sm); line-height: 1.5;">
+                                {{ service.description|truncatewords:15 }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div style="text-align: right;">
+                            {% if service.sale_price %}
+                            <span style="text-decoration: line-through; color: var(--color-text-muted); font-size: var(--font-size-sm);">₹{{ service.price }}</span>
+                            <span class="text-accent" style="font-weight: 700; font-size: var(--font-size-lg); display: block;">₹{{ service.sale_price }}</span>
+                            {% else %}
+                            <span class="text-accent" style="font-weight: 700; font-size: var(--font-size-lg);">₹{{ service.price }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center" style="grid-column: 1/-1; padding: var(--spacing-3xl);">
+                    <p class="text-muted">No services available at this time.</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="booking-nav">
+                <div></div>
+                <button type="button" class="btn btn-primary" id="next-btn">
+                    Continue
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: var(--spacing-xs);">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Stylist -->
+        <div class="booking-step" data-step="2">
+            <h2 class="text-center" style="margin-bottom: var(--spacing-xl);">Choose Your Stylist</h2>
+
+            <!-- Any Available Option -->
+            <div class="any-staff-option" id="any-staff-option" style="margin-bottom: var(--spacing-lg);">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5" style="margin-bottom: var(--spacing-sm);">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 010 7.75"/>
+                </svg>
+                <h4>Any Available Stylist</h4>
+                <p class="text-muted" style="font-size: var(--font-size-sm);">We'll assign the first available stylist</p>
+            </div>
+
+            <p class="text-center text-muted" style="margin-bottom: var(--spacing-lg);">Or choose a specific stylist:</p>
+
+            <div class="selection-grid">
+                {% for member in staff_members %}
+                <div class="staff-card"
+                     data-staff-id="{{ member.pk }}"
+                     data-staff-name="{{ member.user.full_name }}"
+                     data-staff-services="{% for s in member.specializations.all %}{{ s.pk }}{% if not forloop.last %},{% endif %}{% endfor %}">
+                    <div class="flex gap-2 items-center">
+                        <div style="width: 70px; height: 70px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid var(--color-accent);">
+                            {% if member.avatar %}
+                            <img src="{{ member.avatar.url }}" alt="{{ member.user.full_name }}"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                            <div style="width: 100%; height: 100%; background: var(--color-bg-secondary); display: flex; align-items: center; justify-content: center;">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.5">
+                                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div style="flex: 1;">
+                            <h4 style="margin-bottom: 2px;">{{ member.user.full_name }}</h4>
+                            <p class="text-accent" style="font-size: var(--font-size-sm);">{{ member.title }}</p>
+                            {% if member.years_experience %}
+                            <p class="text-muted" style="font-size: var(--font-size-xs); margin-top: var(--spacing-xs);">
+                                {{ member.years_experience }}+ years experience
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="booking-nav">
+                <button type="button" class="btn btn-secondary" id="prev-btn" style="display: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: var(--spacing-xs);">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+                <button type="button" class="btn btn-primary" id="next-btn">
+                    Continue
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: var(--spacing-xs);">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Select Date & Time -->
+        <div class="booking-step" data-step="3">
+            <h2 class="text-center" style="margin-bottom: var(--spacing-xl);">Select Date & Time</h2>
+
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Calendar -->
+                <div>
+                    <h4 style="margin-bottom: var(--spacing-md);">Select Date</h4>
+                    <div class="calendar-wrapper">
+                        <div class="calendar-header">
+                            <button type="button" class="calendar-nav" id="prev-month">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 18l-6-6 6-6"/>
+                                </svg>
+                            </button>
+                            <h4 id="calendar-month">Loading...</h4>
+                            <button type="button" class="calendar-nav" id="next-month">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 18l6-6-6-6"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="calendar-grid" class="calendar-grid">
+                            <!-- Calendar will be rendered by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time Slots -->
+                <div>
+                    <h4 style="margin-bottom: var(--spacing-md);">Available Times</h4>
+                    <div class="time-slots-wrapper">
+                        <div id="selected-date-display" class="selected-date-display" style="display: none;"></div>
+                        <div id="time-slots">
+                            <div class="no-slots-message">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                <p>Please select a date to see available times</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-nav">
+                <button type="button" class="btn btn-secondary" id="prev-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: var(--spacing-xs);">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+                <button type="button" class="btn btn-primary" id="next-btn">
+                    Continue
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: var(--spacing-xs);">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Confirm -->
+        <div class="booking-step" data-step="4">
+            <h2 class="text-center" style="margin-bottom: var(--spacing-xl);">Confirm Your Booking</h2>
+
+            <!-- Hold Timer -->
+            <div class="hold-timer-wrapper" style="max-width: 500px; margin: 0 auto var(--spacing-xl);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <span>Your slot is held for</span>
+                <span id="hold-timer">5:00</span>
+            </div>
+
+            <div class="summary-card" style="max-width: 500px; margin: 0 auto;">
+                <div class="summary-row">
+                    <span class="summary-label">Service</span>
+                    <span class="summary-value" id="confirm-service">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Stylist</span>
+                    <span class="summary-value" id="confirm-staff">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Date</span>
+                    <span class="summary-value" id="confirm-date">-</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Time</span>
+                    <span class="summary-value" id="confirm-time">-</span>
+                </div>
+                <div class="summary-row" style="margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 2px solid var(--color-border);">
+                    <span class="summary-label" style="font-weight: 600;">Total</span>
+                    <span class="summary-value summary-total" id="confirm-price">₹0</span>
+                </div>
+            </div>
+
+            <!-- Notes -->
+            <div style="max-width: 500px; margin: var(--spacing-xl) auto 0;">
+                <label for="notes" style="display: block; margin-bottom: var(--spacing-sm); font-weight: 500;">
+                    Special Requests (Optional)
+                </label>
+                <textarea name="notes" id="notes" rows="3" class="form-input"
+                          placeholder="Any special requests or notes for your appointment..."
+                          style="width: 100%; resize: vertical;"></textarea>
+            </div>
+
+            <div class="booking-nav" style="max-width: 500px; margin: var(--spacing-xl) auto 0;">
+                <button type="button" class="btn btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: var(--spacing-xs);">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: var(--spacing-sm);">
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    Confirm Booking
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/booking.js' %}"></script>
+<script>
+    // Override API base URL if needed
+    if (typeof bookingSystem !== 'undefined') {
+        bookingSystem.apiBaseUrl = '/booking/api';
+    }
+</script>
+{% endblock %}

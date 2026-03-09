@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Wallet{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wallet-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: var(--spacing-3xl) var(--spacing-xl);
+    }
+
+    .page-header {
+        margin-bottom: var(--spacing-2xl);
+    }
+
+    .page-header h1 {
+        font-size: var(--font-size-3xl);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .wallet-overview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-2xl);
+    }
+
+    .balance-card {
+        background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark, #b8932e) 100%);
+        color: var(--btn-primary-text, #000);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-2xl);
+    }
+
+    .balance-label {
+        opacity: 0.8;
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .balance-amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .credits-card {
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--spacing-2xl);
+    }
+
+    .credits-count {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--color-accent);
+    }
+
+    .add-funds-btn {
+        margin-top: var(--spacing-lg);
+    }
+
+    .transactions-section {
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+    }
+
+    .transactions-header {
+        padding: var(--spacing-xl);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .transactions-header h3 {
+        margin: 0;
+    }
+
+    .transactions-list {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .transaction-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-lg) var(--spacing-xl);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .transaction-item:last-child {
+        border-bottom: none;
+    }
+
+    .transaction-info {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .transaction-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .transaction-icon.credit {
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+    }
+
+    .transaction-icon.debit {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+    }
+
+    .transaction-icon.refund {
+        background: rgba(59, 130, 246, 0.15);
+        color: #3b82f6;
+    }
+
+    .transaction-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .transaction-details h4 {
+        font-size: var(--font-size-md);
+        font-weight: 500;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .transaction-details p {
+        font-size: var(--font-size-sm);
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+
+    .transaction-amount {
+        text-align: right;
+    }
+
+    .transaction-amount .amount {
+        font-weight: 600;
+        font-size: var(--font-size-lg);
+    }
+
+    .transaction-amount .amount.positive {
+        color: #22c55e;
+    }
+
+    .transaction-amount .amount.negative {
+        color: #ef4444;
+    }
+
+    .transaction-amount .date {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-muted);
+    }
+
+    .empty-transactions {
+        text-align: center;
+        padding: var(--spacing-3xl);
+        color: var(--color-text-muted);
+    }
+
+    .empty-transactions svg {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--spacing-md);
+        opacity: 0.5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wallet-container">
+    <div class="page-header">
+        <h1>My Wallet</h1>
+        <p class="text-muted">Manage your balance and view transaction history</p>
+    </div>
+
+    <!-- Wallet Overview -->
+    <div class="wallet-overview">
+        <div class="balance-card">
+            <p class="balance-label">Available Balance</p>
+            <p class="balance-amount">₹{{ wallet.balance|floatformat:2 }}</p>
+            <a href="{% url 'membership:add_funds' %}" class="btn btn-secondary add-funds-btn">
+                Add Funds
+            </a>
+        </div>
+
+        <div class="credits-card">
+            <p class="balance-label">Available Credits</p>
+            <p class="credits-count">{{ wallet.credits }}</p>
+            <p class="text-muted" style="margin-top: var(--spacing-md);">
+                Credits can be used for services. 1 credit = 1 service.
+            </p>
+        </div>
+    </div>
+
+    <!-- Transactions -->
+    <div class="transactions-section">
+        <div class="transactions-header">
+            <h3>Recent Transactions</h3>
+        </div>
+
+        <div class="transactions-list">
+            {% if transactions %}
+                {% for transaction in transactions %}
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon {{ transaction.transaction_type }}">
+                            {% if transaction.transaction_type == 'credit' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                <polyline points="17 6 23 6 23 12"/>
+                            </svg>
+                            {% elif transaction.transaction_type == 'debit' %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
+                                <polyline points="17 18 23 18 23 12"/>
+                            </svg>
+                            {% else %}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="1 4 1 10 7 10"/>
+                                <polyline points="23 20 23 14 17 14"/>
+                                <path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/>
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <div class="transaction-details">
+                            <h4>{{ transaction.get_transaction_type_display }}</h4>
+                            <p>{{ transaction.description|default:"No description" }}</p>
+                        </div>
+                    </div>
+                    <div class="transaction-amount">
+                        {% if transaction.amount != 0 %}
+                        <p class="amount {% if transaction.amount > 0 %}positive{% else %}negative{% endif %}">
+                            {% if transaction.amount > 0 %}+{% endif %}₹{{ transaction.amount|floatformat:2 }}
+                        </p>
+                        {% endif %}
+                        {% if transaction.credits_amount != 0 %}
+                        <p class="amount {% if transaction.credits_amount > 0 %}positive{% else %}negative{% endif %}">
+                            {% if transaction.credits_amount > 0 %}+{% endif %}{{ transaction.credits_amount }} credits
+                        </p>
+                        {% endif %}
+                        <p class="date">{{ transaction.created_at|date:"M d, Y H:i" }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="empty-transactions">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                <p>No transactions yet</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
