@@ -7,6 +7,7 @@ django-cors-headers>=4.0
 python-decouple>=3.8
 
 # Database & Caching
+psycopg2-binary>=2.9
 redis>=5.0
 django-redis>=5.4
 
