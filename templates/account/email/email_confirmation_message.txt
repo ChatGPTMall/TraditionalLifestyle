@@ -1,0 +1,15 @@
+{% load i18n %}{% autoescape off %}
+Hello{% if user.first_name %} {{ user.first_name }}{% endif %},
+
+Thank you for registering at Traditional Lifestyle - your destination for premium grooming experiences.
+
+Please confirm your email address by clicking the link below:
+
+{{ activate_url }}
+
+If you did not create an account, please ignore this email.
+
+Best regards,
+Traditional Lifestyle Team
+https://traditionallifestyle.in
+{% endautoescape %}

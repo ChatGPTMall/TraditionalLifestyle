@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to Your Membership</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+        <h1 style="color: white; margin: 0;">Welcome to {{ plan.name }}!</h1>
+    </div>
+
+    <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
+        <p>Dear {{ user.first_name|default:"Valued Member" }},</p>
+
+        <p>Thank you for subscribing to our <strong>{{ plan.name }}</strong> membership plan!</p>
+
+        <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #667eea;">Your Membership Details</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Plan:</strong> {{ plan.name }}</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Start Date:</strong> {{ membership.start_date|date:"F d, Y" }}</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Next Billing:</strong> {{ membership.end_date|date:"F d, Y" }}</li>
+                {% if plan.credits > 0 %}
+                <li style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Monthly Credits:</strong> {{ plan.credits }}</li>
+                {% endif %}
+                {% if plan.discount_percentage > 0 %}
+                <li style="padding: 8px 0;"><strong>Discount:</strong> {{ plan.discount_percentage }}% off all services</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <h3 style="color: #667eea;">Your Benefits Include:</h3>
+        <ul>
+            {% if plan.discount_percentage > 0 %}
+            <li>{{ plan.discount_percentage }}% discount on all services</li>
+            {% endif %}
+            {% if plan.credits > 0 %}
+            <li>{{ plan.credits }} monthly credits for bookings</li>
+            {% endif %}
+            {% if plan.priority_booking %}
+            <li>Priority booking access</li>
+            {% endif %}
+            {% if plan.free_products %}
+            <li>Complimentary products</li>
+            {% endif %}
+        </ul>
+
+        <p>Start enjoying your exclusive member benefits today!</p>
+
+        <p style="margin-top: 30px;">
+            Best regards,<br>
+            <strong><a href="https://traditionallifestyle.in" style="color: #667eea; text-decoration: none;">Traditional Lifestyle</a> Team</strong>
+        </p>
+    </div>
+</body>
+</html>

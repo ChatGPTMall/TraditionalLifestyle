@@ -1,0 +1,24 @@
+Welcome to {{ plan.name }}!
+
+Dear {{ user.first_name|default:"Valued Member" }},
+
+Thank you for subscribing to our {{ plan.name }} membership plan!
+
+YOUR MEMBERSHIP DETAILS
+-----------------------
+Plan: {{ plan.name }}
+Start Date: {{ membership.start_date|date:"F d, Y" }}
+Next Billing: {{ membership.end_date|date:"F d, Y" }}
+{% if plan.credits > 0 %}Monthly Credits: {{ plan.credits }}{% endif %}
+{% if plan.discount_percentage > 0 %}Discount: {{ plan.discount_percentage }}% off all services{% endif %}
+
+YOUR BENEFITS INCLUDE:
+{% if plan.discount_percentage > 0 %}- {{ plan.discount_percentage }}% discount on all services{% endif %}
+{% if plan.credits > 0 %}- {{ plan.credits }} monthly credits for bookings{% endif %}
+{% if plan.priority_booking %}- Priority booking access{% endif %}
+{% if plan.free_products %}- Complimentary products{% endif %}
+
+Start enjoying your exclusive member benefits today!
+
+Best regards,
+Traditional Lifestyle Team
