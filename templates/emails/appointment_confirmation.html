@@ -190,13 +190,14 @@
                 <p class="note">Please arrive 10 minutes before your appointment time. If you need to reschedule or cancel, please do so at least 24 hours in advance.</p>
 
                 <center>
-                    <a href="#" class="cta-button cta-{{ brand }}">View Appointment</a>
+                    <a href="https://traditionallifestyle.in/booking/appointments/" class="cta-button cta-{{ brand }}">View Appointment</a>
                 </center>
             </div>
 
             <!-- Footer -->
             <div class="footer">
-                <p>{{ brand_name }}</p>
+                <p><a href="https://traditionallifestyle.in" style="color: {% if brand == 'men' %}#d4af37{% else %}#87d762{% endif %}; text-decoration: none; font-weight: 600;">Traditional Lifestyle</a></p>
+                <p style="margin-top: 5px;">{{ brand_name }}</p>
                 <p>
                     {% if brand == 'men' %}
                     Al Falah Complex, Gulmarg Road, Magam
@@ -213,9 +214,8 @@
                 </p>
                 <div class="divider"></div>
                 <p>
-                    <a href="#">Manage Appointments</a> |
-                    <a href="#">Contact Us</a> |
-                    <a href="#">Unsubscribe</a>
+                    <a href="https://traditionallifestyle.in/booking/appointments/">Manage Appointments</a> |
+                    <a href="https://traditionallifestyle.in/contact/">Contact Us</a>
                 </p>
             </div>
         </div>

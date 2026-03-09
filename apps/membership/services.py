@@ -6,11 +6,13 @@ Stripe integration for subscriptions and payments
 import stripe
 from django.conf import settings
 from django.utils import timezone
+from django.template.loader import render_to_string
 from datetime import timedelta
 from decimal import Decimal
 import logging
 
 from .models import MembershipPlan, Membership, Wallet, WalletTransaction
+from apps.core.email_utils import send_email_async
 
 logger = logging.getLogger(__name__)
 
@@ -212,7 +214,36 @@ class MembershipService:
         if plan.credits > 0:
             MembershipService.add_membership_credits(user, plan.credits)
 
+        # Send welcome email
+        MembershipService.send_membership_activated_email(user, membership, plan)
+
         return membership
+
+    @staticmethod
+    def send_membership_activated_email(user, membership, plan):
+        """Send membership activation email (async)."""
+        if not user.email:
+            return
+
+        subject = f'Welcome to {plan.name} - Your Membership is Active!'
+
+        context = {
+            'user': user,
+            'membership': membership,
+            'plan': plan,
+        }
+
+        html_message = render_to_string('emails/membership_activated.html', context)
+        plain_message = render_to_string('emails/membership_activated.txt', context)
+
+        logger.info(f"Queuing membership activation email to {user.email}")
+
+        send_email_async(
+            subject=subject,
+            plain_message=plain_message,
+            recipient_list=[user.email],
+            html_message=html_message,
+        )
 
     @staticmethod
     def add_membership_credits(user, credits):

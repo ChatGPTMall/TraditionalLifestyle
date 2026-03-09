@@ -3,13 +3,16 @@ Booking Signals
 Notification triggers for appointments
 """
 
+import logging
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 
 from .models import Appointment
+from apps.core.email_utils import send_email_async
+
+logger = logging.getLogger(__name__)
 
 
 @receiver(pre_save, sender=Appointment)
@@ -43,7 +46,7 @@ def appointment_saved(sender, instance, created, **kwargs):
 
 
 def send_appointment_confirmation(appointment: Appointment):
-    """Send appointment confirmation email to customer."""
+    """Send appointment confirmation email to customer (async)."""
     if not appointment.customer.email:
         return
 
@@ -66,23 +69,22 @@ def send_appointment_confirmation(appointment: Appointment):
     html_message = render_to_string('emails/appointment_confirmation.html', context)
     plain_message = render_to_string('emails/appointment_confirmation.txt', context)
 
-    try:
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[appointment.customer.email],
-            html_message=html_message,
-            fail_silently=True,
-        )
-        appointment.confirmation_sent = True
-        appointment.save(update_fields=['confirmation_sent'])
-    except Exception as e:
-        print(f"Failed to send confirmation email: {e}")
+    logger.info(f"Queuing confirmation email to {appointment.customer.email}")
+
+    # Send async - don't block the request
+    send_email_async(
+        subject=subject,
+        plain_message=plain_message,
+        recipient_list=[appointment.customer.email],
+        html_message=html_message,
+    )
+
+    # Mark as sent (optimistic - email is queued)
+    Appointment.objects.filter(pk=appointment.pk).update(confirmation_sent=True)
 
 
 def send_appointment_confirmed(appointment: Appointment):
-    """Send email when appointment is confirmed by staff."""
+    """Send email when appointment is confirmed by staff (async)."""
     if not appointment.customer.email:
         return
 
@@ -103,21 +105,18 @@ def send_appointment_confirmed(appointment: Appointment):
     html_message = render_to_string('emails/appointment_confirmed.html', context)
     plain_message = render_to_string('emails/appointment_confirmed.txt', context)
 
-    try:
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[appointment.customer.email],
-            html_message=html_message,
-            fail_silently=True,
-        )
-    except Exception as e:
-        print(f"Failed to send confirmed email: {e}")
+    logger.info(f"Queuing confirmed email to {appointment.customer.email}")
+
+    send_email_async(
+        subject=subject,
+        plain_message=plain_message,
+        recipient_list=[appointment.customer.email],
+        html_message=html_message,
+    )
 
 
 def send_appointment_cancelled(appointment: Appointment):
-    """Send email when appointment is cancelled."""
+    """Send email when appointment is cancelled (async)."""
     if not appointment.customer.email:
         return
 
@@ -138,22 +137,19 @@ def send_appointment_cancelled(appointment: Appointment):
     html_message = render_to_string('emails/appointment_cancelled.html', context)
     plain_message = render_to_string('emails/appointment_cancelled.txt', context)
 
-    try:
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[appointment.customer.email],
-            html_message=html_message,
-            fail_silently=True,
-        )
-    except Exception as e:
-        print(f"Failed to send cancellation email: {e}")
+    logger.info(f"Queuing cancellation email to {appointment.customer.email}")
+
+    send_email_async(
+        subject=subject,
+        plain_message=plain_message,
+        recipient_list=[appointment.customer.email],
+        html_message=html_message,
+    )
 
 
 def send_appointment_reminder(appointment: Appointment):
     """
-    Send appointment reminder email.
+    Send appointment reminder email (async).
     Should be called by Celery task 24 hours before appointment.
     """
     if not appointment.customer.email:
@@ -179,16 +175,14 @@ def send_appointment_reminder(appointment: Appointment):
     html_message = render_to_string('emails/appointment_reminder.html', context)
     plain_message = render_to_string('emails/appointment_reminder.txt', context)
 
-    try:
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[appointment.customer.email],
-            html_message=html_message,
-            fail_silently=True,
-        )
-        appointment.reminder_sent = True
-        appointment.save(update_fields=['reminder_sent'])
-    except Exception as e:
-        print(f"Failed to send reminder email: {e}")
+    logger.info(f"Queuing reminder email to {appointment.customer.email}")
+
+    send_email_async(
+        subject=subject,
+        plain_message=plain_message,
+        recipient_list=[appointment.customer.email],
+        html_message=html_message,
+    )
+
+    # Mark as sent (optimistic)
+    Appointment.objects.filter(pk=appointment.pk).update(reminder_sent=True)
