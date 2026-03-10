@@ -56,18 +56,27 @@
 
     /* Logo */
     .nav-logo-modern {
-        font-family: var(--font-heading);
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: #fff;
+        display: flex;
+        align-items: center;
         text-decoration: none;
-        letter-spacing: 0.05em;
         z-index: 1002;
-        transition: color 0.3s ease;
+        transition: opacity 0.3s ease;
     }
 
     .nav-logo-modern:hover {
-        color: var(--color-accent);
+        opacity: 0.85;
+    }
+
+    .nav-logo-img {
+        height: 60px;
+        width: auto;
+        object-fit: contain;
+    }
+
+    @media (max-width: 768px) {
+        .nav-logo-img {
+            height: 45px;
+        }
     }
 
     /* Two-Line Hamburger Button */
@@ -151,16 +160,21 @@
     }
 
     .drawer-brand {
-        font-family: var(--font-heading);
-        font-size: 1.8rem;
-        color: var(--color-text);
         margin-bottom: 0.5rem;
     }
 
-    .drawer-brand span {
-        color: var(--color-accent);
-        font-family: var(--font-accent);
-        font-style: italic;
+    .drawer-logo-img {
+        height: 70px;
+        width: auto;
+        object-fit: contain;
+    }
+
+    /* Footer logo */
+    .footer-logo-img {
+        height: 65px;
+        width: auto;
+        object-fit: contain;
+        margin-bottom: 0.75rem;
     }
 
     .drawer-tagline {
@@ -359,7 +373,11 @@
         <div class="navbar-inner">
             <!-- Logo -->
             <a href="{% url 'core:home' %}" class="nav-logo-modern">
-                {{ brand_name }}
+                {% if is_men_brand %}
+                <img src="{% static 'images/brooklyn/logo.png' %}" alt="{{ brand_name }}" class="nav-logo-img">
+                {% else %}
+                <img src="{% static 'images/vintage/logo.png' %}" alt="{{ brand_name }}" class="nav-logo-img">
+                {% endif %}
             </a>
 
             <!-- Desktop Nav Links (visible on large screens) -->
@@ -389,7 +407,13 @@
     <div class="nav-drawer" id="nav-drawer">
         <!-- Drawer Header -->
         <div class="drawer-header">
-            <div class="drawer-brand"><span>{{ brand_name }}</span></div>
+            <div class="drawer-brand">
+                {% if is_men_brand %}
+                <img src="{% static 'images/brooklyn/logo.png' %}" alt="{{ brand_name }}" class="drawer-logo-img">
+                {% else %}
+                <img src="{% static 'images/vintage/logo.png' %}" alt="{{ brand_name }}" class="drawer-logo-img">
+                {% endif %}
+            </div>
             <p class="drawer-tagline">{{ brand_tagline }}</p>
         </div>
 
@@ -522,7 +546,11 @@
         <div class="container">
             <div class="grid grid-cols-4 gap-3">
                 <div>
-                    <h4>{{ brand_name }}</h4>
+                    {% if is_men_brand %}
+                    <img src="{% static 'images/brooklyn/logo.png' %}" alt="{{ brand_name }}" class="footer-logo-img">
+                    {% else %}
+                    <img src="{% static 'images/vintage/logo.png' %}" alt="{{ brand_name }}" class="footer-logo-img">
+                    {% endif %}
                     <p class="text-muted">{{ brand_tagline }}</p>
                 </div>
                 <div>

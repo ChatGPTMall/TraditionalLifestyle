@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -176,39 +177,25 @@
             font-weight: 400;
             letter-spacing: 0.35em;
             text-transform: uppercase;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.8rem;
             opacity: 0;
             transform: translateY(20px);
         }
 
         .panel-men .panel-label {
-            color: rgba(255, 255, 255, 0.6);
+            color: #d4af37;
         }
 
         .panel-women .panel-label {
             color: #87d762;
         }
 
-        .panel-title {
-            margin-bottom: 1.5rem;
+        .panel-logo {
+            max-width: 220px;
+            height: auto;
+            margin-bottom: 0.8rem;
             opacity: 0;
             transform: translateY(30px);
-            line-height: 1.1;
-        }
-
-        .panel-men .panel-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 3.5rem;
-            color: #ffffff;
-            letter-spacing: 0.08em;
-            font-weight: 400;
-        }
-
-        .panel-women .panel-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.2rem;
-            color: #1a1a1a;
-            font-weight: 400;
         }
 
         .panel-subtitle {
@@ -216,17 +203,17 @@
             font-size: 1rem;
             font-style: italic;
             font-weight: 300;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
             opacity: 0;
             transform: translateY(20px);
         }
 
         .panel-men .panel-subtitle {
-            color: rgba(255, 255, 255, 0.5);
+            color: #d4af37;
         }
 
         .panel-women .panel-subtitle {
-            color: #666666;
+            color: #87d762;
         }
 
         .panel-cta {
@@ -340,19 +327,50 @@
             }
 
             .brand-panel:hover {
-                flex: 1.1;
+                flex: 1.05;
             }
 
-            .panel-men .panel-title {
-                font-size: 2.5rem;
+            .panel-content {
+                padding: 1rem;
             }
 
-            .panel-women .panel-title {
-                font-size: 2.2rem;
+            .panel-label {
+                font-size: 0.6rem;
+                margin-bottom: 0.5rem;
             }
 
-            .center-logo .logo-text {
-                font-size: 0.9rem;
+            .panel-logo {
+                max-width: 140px;
+                margin-bottom: 0.5rem;
+            }
+
+            .panel-subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 1rem;
+            }
+
+            .panel-cta {
+                padding: 0.7rem 1.8rem;
+                font-size: 0.65rem;
+            }
+
+            .center-logo {
+                display: none;
+            }
+
+            .decorative-circle {
+                display: none;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 480px) {
+            .panel-logo {
+                max-width: 120px;
+            }
+
+            .panel-subtitle {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -378,7 +396,7 @@
             <div class="panel-bg"></div>
             <div class="panel-content">
                 <p class="panel-label">For Him</p>
-                <h2 class="panel-title">BROOKLYN<br>LUXURY<br>BARBERSHOP</h2>
+                <img src="{% static 'images/brooklyn/logo.png' %}" alt="Brooklyn Luxury Barbershop" class="panel-logo">
                 <p class="panel-subtitle">Where style meets tradition.</p>
                 <a href="{% url 'core:set_brand' 'men' %}" class="panel-cta">Enter</a>
             </div>
@@ -394,7 +412,7 @@
             <div class="panel-bg"></div>
             <div class="panel-content">
                 <p class="panel-label">For Her</p>
-                <h2 class="panel-title">Vintage<br>Salon</h2>
+                <img src="{% static 'images/vintage/logo.png' %}" alt="Vintage Salon" class="panel-logo">
                 <p class="panel-subtitle">Premium salon experiences for women.</p>
                 <a href="{% url 'core:set_brand' 'women' %}" class="panel-cta">Enter</a>
             </div>
@@ -411,7 +429,7 @@
 
         // Animate panel content with stagger
         tl.to('.panel-label', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 }, '-=0.8');
-        tl.to('.panel-title', { opacity: 1, y: 0, duration: 1, stagger: 0.15 }, '-=0.6');
+        tl.to('.panel-logo', { opacity: 1, y: 0, duration: 1, stagger: 0.15 }, '-=0.6');
         tl.to('.panel-subtitle', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 }, '-=0.7');
         tl.to('.panel-cta', { opacity: 1, y: 0, duration: 0.8, stagger: 0.15 }, '-=0.6');
         tl.to('.decorative-circle', { opacity: 1, duration: 0.6 }, '-=0.4');

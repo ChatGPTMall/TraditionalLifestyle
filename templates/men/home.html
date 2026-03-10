@@ -1153,6 +1153,7 @@
 @media (max-width: 992px) {
     .visit-grid {
         grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
     }
 
     .visit-map-wrapper {
@@ -1165,14 +1166,113 @@
 }
 
 @media (max-width: 768px) {
+    .visit-section {
+        padding: var(--spacing-2xl) 0;
+    }
+
+    .visit-header {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .visit-grid {
+        gap: var(--spacing-lg);
+    }
+
+    .visit-card {
+        padding: var(--spacing-lg);
+    }
+
+    .visit-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .visit-card-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .visit-card-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
     .hours-grid {
         grid-template-columns: 1fr;
+    }
+
+    .hour-item {
+        padding: var(--spacing-xs) 0;
+    }
+
+    .contact-links {
+        gap: var(--spacing-xs);
+    }
+
+    .contact-link {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .contact-link span {
+        font-size: var(--font-size-sm);
+        word-break: break-all;
+    }
+
+    .visit-map-wrapper {
+        min-height: 280px;
+        border-radius: var(--radius-lg);
+    }
+
+    .visit-map {
+        min-height: 280px;
+    }
+
+    .map-overlay {
+        padding: var(--spacing-md);
     }
 
     .map-overlay-content {
         flex-direction: column;
         gap: var(--spacing-md);
         text-align: center;
+    }
+
+    .map-address h4 {
+        font-size: var(--font-size-md);
+    }
+
+    .map-address p {
+        font-size: var(--font-size-xs);
+    }
+
+    .btn-directions {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: var(--font-size-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .visit-card {
+        padding: var(--spacing-md);
+    }
+
+    .visit-card p {
+        font-size: var(--font-size-sm);
+    }
+
+    .visit-map-wrapper {
+        min-height: 220px;
+    }
+
+    .visit-map {
+        min-height: 220px;
+    }
+
+    .contact-link svg {
+        width: 16px;
+        height: 16px;
     }
 }
 
