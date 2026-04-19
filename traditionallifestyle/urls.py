@@ -7,6 +7,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Admin Branding
+admin.site.site_header = 'Traditional Lifestyle Admin'
+admin.site.site_title = 'Traditional Lifestyle'
+admin.site.index_title = 'Manage Your Business'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
