@@ -19,9 +19,9 @@ Booking ID: #{{ appointment.pk }}
 
 PRICING
 -------
-Price:    ${{ appointment.price }}
+Price:    {{ appointment.price }}
 {% if appointment.discount > 0 %}Discount: -${{ appointment.discount }}{% endif %}
-Total:    ${{ appointment.total }}
+Total:    {{ appointment.total }}
 
 {% if appointment.special_requests or appointment.notes %}NOTES / SPECIAL REQUESTS
 ------------------------

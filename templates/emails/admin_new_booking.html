@@ -237,12 +237,12 @@
                 <table class="detail-table">
                     <tr>
                         <td class="detail-label">Price</td>
-                        <td class="detail-value">${{ appointment.price }}</td>
+                        <td class="detail-value">{{ appointment.price }}</td>
                     </tr>
                     {% if appointment.discount > 0 %}
                     <tr>
                         <td class="detail-label">Discount</td>
-                        <td class="detail-value" style="color: #ef4444;">-${{ appointment.discount }}</td>
+                        <td class="detail-value" style="color: #ef4444;">-{{ appointment.discount }}</td>
                     </tr>
                     {% endif %}
                     <tr>
