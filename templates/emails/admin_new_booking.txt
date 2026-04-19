@@ -1,0 +1,39 @@
+NEW BOOKING RECEIVED — {{ brand_name }}
+========================================
+
+A new appointment has been booked and awaits your confirmation.
+
+CUSTOMER INFORMATION
+--------------------
+Name:  {{ customer.full_name }}
+Email: {{ customer.email }}
+{% if customer.phone %}Phone: {{ customer.phone }}{% endif %}
+
+APPOINTMENT DETAILS
+-------------------
+Service:    {{ service.name }}
+Date:       {{ appointment.date|date:"l, F j, Y" }}
+Time:       {{ appointment.start_time|time:"g:i A" }} — {{ appointment.end_time|time:"g:i A" }}
+Staff:      {{ staff.user.full_name }}
+Booking ID: #{{ appointment.pk }}
+
+PRICING
+-------
+Price:    ${{ appointment.price }}
+{% if appointment.discount > 0 %}Discount: -${{ appointment.discount }}{% endif %}
+Total:    ${{ appointment.total }}
+
+{% if appointment.special_requests or appointment.notes %}NOTES / SPECIAL REQUESTS
+------------------------
+{{ appointment.special_requests|default:appointment.notes }}
+{% endif %}
+
+CONFIRM THIS BOOKING
+====================
+{{ confirm_url }}
+
+This link expires in 7 days. You can also confirm from the admin portal.
+
+—
+{{ brand_name }} | Traditional Lifestyle
+https://traditionallifestyle.in
