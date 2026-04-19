@@ -28,4 +28,7 @@ urlpatterns = [
     path('api/available-slots/', views.AvailableSlotsAPIView.as_view(), name='api_available_slots'),
     path('api/hold-slot/', views.HoldSlotAPIView.as_view(), name='api_hold_slot'),
     path('api/release-hold/', views.ReleaseHoldAPIView.as_view(), name='api_release_hold'),
+
+    # Email confirm (admin one-click confirm)
+    path('confirm/<int:pk>/<str:token>/', views.EmailConfirmAppointmentView.as_view(), name='email_confirm'),
 ]

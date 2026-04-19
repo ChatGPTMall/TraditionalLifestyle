@@ -368,3 +368,56 @@ class ReleaseHoldAPIView(APIView):
         result = booking_service.release_hold(hold_id)
 
         return Response({'success': result})
+
+
+class EmailConfirmAppointmentView(View):
+    """Confirm an appointment via email link with signed token."""
+
+    def get(self, request, pk, token):
+        from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+
+        signer = TimestampSigner(salt='appointment-confirm')
+
+        try:
+            # Verify token (expires after 7 days)
+            value = signer.unsign(token, max_age=60 * 60 * 24 * 7)
+            if str(pk) != value:
+                raise BadSignature("Token mismatch")
+
+            appointment = get_object_or_404(Appointment, pk=pk)
+
+            if appointment.status == 'confirmed':
+                context = {
+                    'success': True,
+                    'message': 'This appointment has already been confirmed.',
+                    'appointment': appointment,
+                }
+            elif appointment.status in ('cancelled', 'completed', 'no_show'):
+                context = {
+                    'success': False,
+                    'message': f'This appointment has been {appointment.get_status_display().lower()} and cannot be confirmed.',
+                    'appointment': appointment,
+                }
+            else:
+                appointment.status = 'confirmed'
+                appointment.save()  # Triggers signal → sends confirmation email to customer
+                context = {
+                    'success': True,
+                    'message': 'Appointment has been confirmed successfully! A confirmation email has been sent to the customer.',
+                    'appointment': appointment,
+                }
+
+        except SignatureExpired:
+            context = {
+                'success': False,
+                'message': 'This confirmation link has expired. Please confirm from the admin portal.',
+                'appointment': None,
+            }
+        except BadSignature:
+            context = {
+                'success': False,
+                'message': 'Invalid confirmation link.',
+                'appointment': None,
+            }
+
+        return render(request, 'common/booking/email_confirm_result.html', context)

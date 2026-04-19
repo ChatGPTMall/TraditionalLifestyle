@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+        .card {
+            background: #1e1e1e;
+            border-radius: 16px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border: 1px solid #2a2a2a;
+        }
+        .icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 36px;
+        }
+        .icon-success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid #22c55e;
+        }
+        .icon-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid #ef4444;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .success h1 { color: #22c55e; }
+        .error h1 { color: #ef4444; }
+        .message {
+            font-size: 16px;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .details {
+            background: #252525;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+        .details-row:last-child { border-bottom: none; }
+        .details-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #888;
+        }
+        .details-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #ddd;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: linear-gradient(135deg, #d4af37, #c9a030);
+            color: #0d0d0d;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .brand-text {
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body>
+    <div class="card {% if success %}success{% else %}error{% endif %}">
+        <div class="icon {% if success %}icon-success{% else %}icon-error{% endif %}">
+            {% if success %}✓{% else %}✕{% endif %}
+        </div>
+
+        <h1>{% if success %}Booking Confirmed{% else %}Cannot Confirm{% endif %}</h1>
+
+        <p class="message">{{ message }}</p>
+
+        {% if appointment %}
+        <div class="details">
+            <div class="details-row">
+                <span class="details-label">Booking ID</span>
+                <span class="details-value">#{{ appointment.pk }}</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Customer</span>
+                <span class="details-value">{{ appointment.customer.full_name }}</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Service</span>
+                <span class="details-value">{{ appointment.service.name }}</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Date</span>
+                <span class="details-value">{{ appointment.date|date:"M j, Y" }}</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Time</span>
+                <span class="details-value">{{ appointment.start_time|time:"g:i A" }}</span>
+            </div>
+            <div class="details-row">
+                <span class="details-label">Status</span>
+                <span class="details-value" style="color: {% if appointment.status == 'confirmed' %}#22c55e{% elif appointment.status == 'cancelled' %}#ef4444{% else %}#f59e0b{% endif %};">
+                    {{ appointment.get_status_display }}
+                </span>
+            </div>
+        </div>
+        {% endif %}
+
+        <a href="https://traditionallifestyle.in/admin/booking/appointment/" class="btn">
+            Open Admin Portal
+        </a>
+
+        <div class="brand-text">Traditional Lifestyle</div>
+    </div>
+</body>
+</html>

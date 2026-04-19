@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Booking Received</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f0f0f0;
+        }
+        .wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .email-container {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+        .header {
+            padding: 35px 30px;
+            text-align: center;
+        }
+        .header-men {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+        }
+        .header-women {
+            background: linear-gradient(135deg, #fffef9 0%, #fdfbf7 100%);
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            margin-bottom: 5px;
+        }
+        .logo-men { color: #d4af37; }
+        .logo-women { color: #87d762; }
+        .header-subtitle {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+        .header-subtitle-men { color: #888; }
+        .header-subtitle-women { color: #999; }
+
+        .alert-banner {
+            padding: 16px 30px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .alert-banner-men {
+            background: linear-gradient(135deg, #d4af37, #c9a030);
+            color: #0d0d0d;
+        }
+        .alert-banner-women {
+            background: linear-gradient(135deg, #87d762, #6bc248);
+            color: #ffffff;
+        }
+        .content {
+            padding: 35px 30px;
+        }
+        .section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #999;
+            margin: 25px 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .section-title:first-child {
+            margin-top: 0;
+        }
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .detail-table td {
+            padding: 10px 0;
+            vertical-align: top;
+        }
+        .detail-label {
+            width: 130px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            font-weight: 500;
+        }
+        .detail-value {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+        .detail-value-highlight {
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .detail-value-highlight-men { color: #d4af37; }
+        .detail-value-highlight-women { color: #87d762; }
+
+        .notes-box {
+            background: #fefce8;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #92400e;
+        }
+        .notes-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #b45309;
+        }
+
+        .confirm-section {
+            text-align: center;
+            padding: 30px 20px;
+            background: #fafafa;
+            border-top: 1px solid #f0f0f0;
+        }
+        .confirm-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .confirm-button {
+            display: inline-block;
+            padding: 16px 45px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            text-decoration: none;
+        }
+        .confirm-button-men {
+            background: linear-gradient(135deg, #d4af37, #c9a030);
+            color: #0d0d0d;
+        }
+        .confirm-button-women {
+            background: linear-gradient(135deg, #87d762, #6bc248);
+            color: #ffffff;
+        }
+
+        .footer {
+            padding: 25px 30px;
+            text-align: center;
+            background: #f5f5f5;
+            font-size: 12px;
+            color: #999;
+        }
+        .footer a {
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="email-container">
+            <!-- Header -->
+            <div class="header header-{{ brand }}">
+                <div class="logo logo-{{ brand }}">{{ brand_name }}</div>
+                <div class="header-subtitle header-subtitle-{{ brand }}">Admin Notification</div>
+            </div>
+
+            <!-- Alert Banner -->
+            <div class="alert-banner alert-banner-{{ brand }}">
+                🔔 New Booking Received — Action Required
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <p style="margin-top: 0; font-size: 15px; color: #555;">
+                    A new appointment has been booked and is awaiting your confirmation.
+                </p>
+
+                <!-- Customer Details -->
+                <div class="section-title">Customer Information</div>
+                <table class="detail-table">
+                    <tr>
+                        <td class="detail-label">Name</td>
+                        <td class="detail-value">{{ customer.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-label">Email</td>
+                        <td class="detail-value">{{ customer.email }}</td>
+                    </tr>
+                    {% if customer.phone %}
+                    <tr>
+                        <td class="detail-label">Phone</td>
+                        <td class="detail-value">{{ customer.phone }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+
+                <!-- Appointment Details -->
+                <div class="section-title">Appointment Details</div>
+                <table class="detail-table">
+                    <tr>
+                        <td class="detail-label">Service</td>
+                        <td class="detail-value">{{ service.name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-label">Date</td>
+                        <td class="detail-value" style="font-weight: 700;">{{ appointment.date|date:"l, F j, Y" }}</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-label">Time</td>
+                        <td class="detail-value" style="font-weight: 700;">{{ appointment.start_time|time:"g:i A" }} — {{ appointment.end_time|time:"g:i A" }}</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-label">Staff</td>
+                        <td class="detail-value">{{ staff.user.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="detail-label">Booking ID</td>
+                        <td class="detail-value">#{{ appointment.pk }}</td>
+                    </tr>
+                </table>
+
+                <!-- Pricing -->
+                <div class="section-title">Pricing</div>
+                <table class="detail-table">
+                    <tr>
+                        <td class="detail-label">Price</td>
+                        <td class="detail-value">${{ appointment.price }}</td>
+                    </tr>
+                    {% if appointment.discount > 0 %}
+                    <tr>
+                        <td class="detail-label">Discount</td>
+                        <td class="detail-value" style="color: #ef4444;">-${{ appointment.discount }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td class="detail-label">Total</td>
+                        <td class="detail-value-highlight detail-value-highlight-{{ brand }}">${{ appointment.total }}</td>
+                    </tr>
+                </table>
+
+                <!-- Special Requests -->
+                {% if appointment.special_requests or appointment.notes %}
+                <div class="notes-box">
+                    <div class="notes-label">📝 Notes / Special Requests</div>
+                    {{ appointment.special_requests|default:appointment.notes }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Confirm Button -->
+            <div class="confirm-section">
+                <div class="confirm-text">Click the button below to confirm this appointment:</div>
+                <a href="{{ confirm_url }}" class="confirm-button confirm-button-{{ brand }}">
+                    ✓&nbsp; Confirm Booking
+                </a>
+                <p style="font-size: 12px; color: #aaa; margin-top: 15px;">
+                    This link expires in 7 days. You can also confirm from the admin portal.
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>
+                    <a href="https://traditionallifestyle.in" style="color: {% if brand == 'men' %}#d4af37{% else %}#87d762{% endif %};">
+                        Traditional Lifestyle
+                    </a>
+                </p>
+                <p>{{ brand_name }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

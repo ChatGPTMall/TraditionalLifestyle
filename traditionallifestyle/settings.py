@@ -251,3 +251,7 @@ BRAND_CHOICES = [
 DEFAULT_BRAND = 'men'
 BRAND_COOKIE_NAME = 'luxury_brand'
 BRAND_COOKIE_AGE = 60 * 60 * 24 * 365  # 1 year
+BRAND_ADMIN_EMAILS = {
+    'men': 'brooklynmagam@gmail.com',
+    'women': 'vintagesalonmagam@gmail.com',
+}

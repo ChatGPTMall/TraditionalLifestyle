@@ -34,6 +34,7 @@ def appointment_saved(sender, instance, created, **kwargs):
     if created:
         # New appointment created
         send_appointment_confirmation(instance)
+        send_admin_new_booking_notification(instance)
     else:
         # Check for status changes
         old_status = getattr(instance, '_old_status', None)
@@ -81,6 +82,50 @@ def send_appointment_confirmation(appointment: Appointment):
 
     # Mark as sent (optimistic - email is queued)
     Appointment.objects.filter(pk=appointment.pk).update(confirmation_sent=True)
+
+
+def send_admin_new_booking_notification(appointment: Appointment):
+    """Send notification email to brand admin when a new booking is created."""
+    from django.core.signing import TimestampSigner
+
+    brand = appointment.service.brand
+    admin_email = settings.BRAND_ADMIN_EMAILS.get(brand)
+
+    if not admin_email:
+        logger.warning(f"No admin email configured for brand '{brand}'")
+        return
+
+    brand_name = 'Brooklyn Luxury Barbershop' if brand == 'men' else 'Vintage Salon'
+
+    # Generate signed confirm URL
+    signer = TimestampSigner(salt='appointment-confirm')
+    token = signer.sign(str(appointment.pk))
+    site_domain = getattr(settings, 'SITE_DOMAIN', 'traditionallifestyle.in')
+    confirm_url = f"https://{site_domain}/booking/confirm/{appointment.pk}/{token}/"
+
+    context = {
+        'appointment': appointment,
+        'customer': appointment.customer,
+        'service': appointment.service,
+        'staff': appointment.staff,
+        'brand_name': brand_name,
+        'brand': brand,
+        'confirm_url': confirm_url,
+    }
+
+    subject = f'New Booking #{appointment.pk} - {appointment.customer.full_name} - {appointment.service.name}'
+
+    html_message = render_to_string('emails/admin_new_booking.html', context)
+    plain_message = render_to_string('emails/admin_new_booking.txt', context)
+
+    logger.info(f"Queuing admin notification email to {admin_email}")
+
+    send_email_async(
+        subject=subject,
+        plain_message=plain_message,
+        recipient_list=[admin_email],
+        html_message=html_message,
+    )
 
 
 def send_appointment_confirmed(appointment: Appointment):
