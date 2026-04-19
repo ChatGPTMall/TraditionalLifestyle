@@ -177,8 +177,10 @@ class AppointmentAdmin(admin.ModelAdmin):
 
     @admin.action(description='Mark selected as Confirmed')
     def mark_confirmed(self, request, queryset):
-        updated = queryset.update(status='confirmed')
-        self.message_user(request, f'{updated} appointments marked as confirmed.')
+        for appointment in queryset:
+            appointment.status = 'confirmed'
+            appointment.save()
+        self.message_user(request, f'{queryset.count()} appointments marked as confirmed.')
 
     @admin.action(description='Mark selected as Completed')
     def mark_completed(self, request, queryset):
