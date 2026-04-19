@@ -163,8 +163,8 @@ LOGOUT_REDIRECT_URL = '/'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': config('GOOGLE_CLIENT_ID', default=''),
-            'secret': config('GOOGLE_CLIENT_SECRET', default=''),
+            'client_id': config('GOOGLE_CLIENT_ID', default=config('client_id', default='')),
+            'secret': config('GOOGLE_CLIENT_SECRET', default=config('client_secret', default='')),
         },
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {
